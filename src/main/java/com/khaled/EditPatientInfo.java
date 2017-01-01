@@ -2,8 +2,8 @@ package com.khaled;
 
 import javax.swing.JFrame;
 
-public class ViewPatient extends JFrame{
-	ViewPatient()
+public class EditPatientInfo extends JFrame{
+	EditPatientInfo()
 	{
 	     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 

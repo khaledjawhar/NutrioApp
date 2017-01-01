@@ -6,51 +6,91 @@ import javax.swing.*;
 
 public class PatientMenu extends JMenuBar {
 
-   String[ ] fileItems = new String[ ] {"Create"};
-   String[ ] editItems = new String[ ] {"View", "update","delete"};
-
+   String[ ] fileItems = new String[ ] {"Add Patient","Add Visit Info"};
+   String[ ] editItems = new String[ ] {"View/Edit Patient Info", "View/Edit Visit Info"};
+   String[ ] processItems=new String[ ] {"Food Recall"};
+   String[ ] report=new String[ ] {"patient Report","Visit Report","Food Recall Report"};
    public PatientMenu(  ) {
 
       JMenu fileMenu = new JMenu("File");
       JMenu editMenu = new JMenu("Edit");
-      ActionListener createListener = new ActionListener(  ) {
+      JMenu processMenu = new JMenu("process");
+      JMenu reportMenu = new JMenu("report");
+      ActionListener addPatientListener = new ActionListener(  ) {
          public void actionPerformed(ActionEvent event) {
-            CreatePatient createPatient=new CreatePatient();
+            AddPatient addPatient=new AddPatient();
          }
       };
+      ActionListener addVisitInfoListener = new ActionListener(  ) {
+          public void actionPerformed(ActionEvent event) {
+             AddVisitInfo addVisit=new AddVisitInfo();
+          }
+       };
     
-       ActionListener updateListener = new ActionListener(  ) {
+       ActionListener editPatientInfoListener = new ActionListener(  ) {
            public void actionPerformed(ActionEvent event) {
-               
+        	   EditPatientInfo editPatientInfo=new EditPatientInfo();
            }
         };
-        ActionListener viewListener = new ActionListener(  ) {
+        ActionListener editVisitInfoListener = new ActionListener(  ) {
             public void actionPerformed(ActionEvent event) {
-            	ViewPatient viewPatient=new ViewPatient();
+            	 EditVisitInfo editVisitInfo=new EditVisitInfo();
             }
          };
-         ActionListener deleteListener = new ActionListener(  ) {
+         ActionListener foodRecallListener = new ActionListener(  ) {
              public void actionPerformed(ActionEvent event) {
-
+             	 FoodRecall foodRecall=new FoodRecall();
              }
           };
-      
-         JMenuItem createItem = new JMenuItem(fileItems[0]);         
-         createItem.addActionListener(createListener);
-         fileMenu.add(createItem);
-         JMenuItem viewItem = new JMenuItem(editItems[0]);
-         viewItem.addActionListener(viewListener);
-         editMenu.add(viewItem);
-         JMenuItem updateItem = new JMenuItem(editItems[1]);
-         updateItem.addActionListener(updateListener);
-         editMenu.add(updateItem);
-         JMenuItem deleteItem = new JMenuItem(editItems[2]);
-         deleteItem.addActionListener(deleteListener);
-         editMenu.add(deleteItem);
+          ActionListener patientReportListener = new ActionListener(  ) {
+              public void actionPerformed(ActionEvent event) {
+              	
+              }
+           };
+           ActionListener visitReportListener = new ActionListener(  ) {
+               public void actionPerformed(ActionEvent event) {
+               	
+               }
+            };
+            
+            ActionListener foodRecallReportListener = new ActionListener(  ) {
+                public void actionPerformed(ActionEvent event) {
+                	 
+                }
+             };
+
+         JMenuItem addPatient = new JMenuItem(fileItems[0]);         
+         addPatient.addActionListener(addPatientListener);
+         fileMenu.add(addPatient);
+         JMenuItem addVisitInfo = new JMenuItem(fileItems[1]);         
+         addVisitInfo.addActionListener(addVisitInfoListener);
+         fileMenu.add(addVisitInfo);
+         JMenuItem editPatientInfo = new JMenuItem(editItems[0]);
+         editPatientInfo.addActionListener(editPatientInfoListener);
+         editMenu.add(editPatientInfo);
+         JMenuItem editVisitInfo = new JMenuItem(editItems[1]);
+         editVisitInfo.addActionListener(editVisitInfoListener);
+         editMenu.add(editVisitInfo);
+         JMenuItem foodRecall = new JMenuItem(processItems[0]);
+         foodRecall.addActionListener(foodRecallListener);
+         processMenu.add(foodRecall);
+         JMenuItem patientReport = new JMenuItem(report[0]);
+         patientReport.addActionListener(patientReportListener);
+         reportMenu.add(patientReport);
+         JMenuItem VisitReport = new JMenuItem(report[1]);
+         VisitReport.addActionListener(visitReportListener);
+         reportMenu.add(VisitReport);
+         JMenuItem FoodRecallReport = new JMenuItem(report[2]);
+         FoodRecallReport.addActionListener(foodRecallReportListener);
+         reportMenu.add(FoodRecallReport);
+         
       // Insert a separator in the Edit menu in Position 1 after "Undo".
       editMenu.insertSeparator(1);
       // Finally, add all the menus to the menu bar.
       add(fileMenu);
       add(editMenu);
+      add(processMenu);
+      add(reportMenu);
+      
    }
 }

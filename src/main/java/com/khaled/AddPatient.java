@@ -16,7 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-public class CreatePatient extends JFrame{
+public class AddPatient extends JFrame{
 	 JButton insert;
 	 JLabel l_name,l_address,l_phone,l_medicalHistory,l_medications,l_supplements,l_allergies,l_previousDiets,l_workOccupation;
 	 JTextField t_name,t_address,t_phone,t_workOccupation;
@@ -25,7 +25,7 @@ public class CreatePatient extends JFrame{
 	 JRadioButton patient_allergies_yes,patient_allergies_no,patient_previousDiets_yes,patient_previousDiets_no;
 	 ButtonGroup group_allergies,group_previousdiets;
 	 handler handle;
-	CreatePatient()
+	AddPatient()
 	{
 	     handle =new handler();
 		 medicalHisotry = new JTextArea();
