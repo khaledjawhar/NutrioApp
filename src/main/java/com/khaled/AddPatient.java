@@ -11,6 +11,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -20,7 +21,7 @@ public class AddPatient extends JFrame{
 	 JButton insert;
 	 JLabel l_name,l_address,l_phone,l_medicalHistory,l_medications,l_supplements,l_allergies,l_previousDiets,l_workOccupation;
 	 JTextField t_name,t_address,t_phone,t_workOccupation;
-	 JTextArea medicalHisotry,medications,supplements;
+	 JTextArea medicalHistory,medications,supplements;
 	 JScrollPane scrollPaneMedicalhisotry,scrollPaneMedications,scrollPaneSupplements;
 	 JRadioButton patient_allergies_yes,patient_allergies_no,patient_previousDiets_yes,patient_previousDiets_no;
 	 ButtonGroup group_allergies,group_previousdiets;
@@ -28,8 +29,8 @@ public class AddPatient extends JFrame{
 	AddPatient()
 	{
 	     handle =new handler();
-		 medicalHisotry = new JTextArea();
-		 scrollPaneMedicalhisotry = new JScrollPane(medicalHisotry); 
+		 medicalHistory = new JTextArea();
+		 scrollPaneMedicalhisotry = new JScrollPane(medicalHistory); 
 		 medications = new JTextArea();
 		 scrollPaneMedications = new JScrollPane(medications); 
 		 supplements = new JTextArea();
@@ -135,7 +136,7 @@ public class AddPatient extends JFrame{
      	        	preStatement.setString(1, t_name.getText()); //this replaces the 1st  "?" in the query for username
      	        	preStatement.setString(2, t_address.getText());    //this replaces the 2st  "?" in the query for password
      	        	preStatement.setString(3, t_phone.getText());
-     	        	preStatement.setString(4, medicalHisotry.getText());
+     	        	preStatement.setString(4, medicalHistory.getText());
      	        	preStatement.setString(5, t_workOccupation.getText());     	 
      	        	preStatement.setString(6, patient_allergies); 
      	        	preStatement.setString(7, patient_previousDiets); 
@@ -143,10 +144,21 @@ public class AddPatient extends JFrame{
      	        	preStatement.setString(9, supplements.getText());
      	        	//executes the prepared statement
      	            preStatement.executeUpdate();
+     	           JOptionPane.showMessageDialog(null, "You have inserted patient info sucessfully","Success",
+                           JOptionPane.INFORMATION_MESSAGE);
+     	          t_name.setText("");
+    	           t_address.setText("");
+    	           t_phone.setText("");
+    	           medicalHistory.setText("");
+    	           t_workOccupation.setText("");
+    	           medications.setText("");
+    	           supplements.setText("");
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	            System.out.println("error while inserting patient data"+e);
+     	            JOptionPane.showMessageDialog(null, "error in inserting patient info","Failed!!",
+                           JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 
      			{  
