@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -187,7 +188,8 @@ public class EditPatientInfo extends JFrame{
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	            System.out.println("error while inserting patient data"+e);
+     	        	 JOptionPane.showMessageDialog(null, "error in pulling patient info","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 
      			{  
@@ -204,45 +206,75 @@ public class EditPatientInfo extends JFrame{
           //checks if the button clicked
             if(ae.getSource()==delete)
             {
-            	 try {
-            		
-     	           
-     	        } catch (Exception e) {
-     	            // TODO Auto-generated catch block
-     	            System.out.println("error while inserting patient data"+e);
-     	        }
-     	        finally 
-     			{  
-     			   if( con != null )
-     					try {
-     						con.close();
-     					} catch (SQLException e) {
-     						// TODO Auto-generated catch block
-     						e.printStackTrace();
-     					}  
-     			}
+            	try {
+           		 DataBase db= new DataBase();    
+        			 con=db.connect(); 
+        			 preStatement = con.prepareStatement("DELETE FROM nutriodb.patient where patient_name=?");
+        			 preStatement.setString(1,combo.getSelectedItem().toString());
+        			 preStatement.executeUpdate();
+        			 JOptionPane.showMessageDialog(null, "You have deleted patient info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
+    	        } catch (Exception e) {
+    	            // TODO Auto-generated catch block
+    	        	 JOptionPane.showMessageDialog(null, "error in deleting patient info","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
+    	        }
+    	        finally 
+    			{  
+    			   if( con != null )
+    					try {
+    						con.close();
+    					} catch (SQLException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}  
+    			}
             }//if
             
           //checks if the button clicked
             if(ae.getSource()==update)
             {
-            	 try {
-            		
-     	           
-     	        } catch (Exception e) {
-     	            // TODO Auto-generated catch block
-     	            System.out.println("error while inserting patient data"+e);
-     	        }
-     	        finally 
-     			{  
-     			   if( con != null )
-     					try {
-     						con.close();
-     					} catch (SQLException e) {
-     						// TODO Auto-generated catch block
-     						e.printStackTrace();
-     					}  
-     			}
+            	try {
+            	 String patient_allergies,patient_previousDiets;	
+           		 DataBase db= new DataBase();    
+        			 con=db.connect(); 
+        			 preStatement = con.prepareStatement("UPDATE nutriodb.patient SET patient_address=?,patient_phone=?,patient_medicalhistory=?,patient_workoccupation=?,patient_allergies=?,patient_previousdiets=?,patient_medications=?,patient_supplements=? WHERE patient_name=?");
+        			 if(patient_allergies_yes.isSelected())
+      	        		patient_allergies=patient_allergies_yes.getText();
+      	        	else
+      	        		patient_allergies=patient_allergies_no.getText();
+      	        	if(patient_previousDiets_yes.isSelected())
+      	        		patient_previousDiets=patient_previousDiets_yes.getText();
+      	        	else
+      	        		patient_previousDiets=patient_previousDiets_no.getText();
+      	        	preStatement.setString(1, t_address.getText());    //this replaces the 2st  "?" in the query for password
+      	        	preStatement.setString(2, t_phone.getText());
+      	        	preStatement.setString(3, medicalHisotry.getText());
+      	        	preStatement.setString(4, t_workOccupation.getText());     	 
+      	        	preStatement.setString(5, patient_allergies); 
+      	        	preStatement.setString(6, patient_previousDiets); 
+      	        	preStatement.setString(7, medications.getText());
+      	        	preStatement.setString(8, supplements.getText()); 
+      	        	preStatement.setString(9, combo.getSelectedItem().toString());
+      	        	preStatement.executeUpdate();
+      	        	 JOptionPane.showMessageDialog(null, "You have updated patient info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
+      	        	preStatement.close();
+    	        } catch (Exception e) {
+    	            // TODO Auto-generated catch block
+    	        	 JOptionPane.showMessageDialog(null, "error in updating patient info","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
+    	        }
+    	        finally 
+    			{  
+    			   if( con != null )
+    					try {
+    						con.close();
+    					} catch (SQLException e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}  
+    			}
             }//if
         }//method
  

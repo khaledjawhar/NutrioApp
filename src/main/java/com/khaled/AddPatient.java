@@ -45,7 +45,7 @@ public class AddPatient extends JFrame{
 		 group_previousdiets = new ButtonGroup();
 		 group_previousdiets.add(patient_previousDiets_yes);
 		 group_previousdiets.add(patient_previousDiets_no);
-		 insert=new JButton("Create");
+		 insert=new JButton("AddPAtient");
 		 insert.addActionListener(handle);
 		 t_name=new JTextField();
 		 t_address=new JTextField();
@@ -146,7 +146,8 @@ public class AddPatient extends JFrame{
      	            preStatement.executeUpdate();
      	           JOptionPane.showMessageDialog(null, "You have inserted patient info sucessfully","Success",
                            JOptionPane.INFORMATION_MESSAGE);
-     	          t_name.setText("");
+     	           preStatement.close();
+     	           t_name.setText("");
     	           t_address.setText("");
     	           t_phone.setText("");
     	           medicalHistory.setText("");
@@ -156,7 +157,6 @@ public class AddPatient extends JFrame{
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	            System.out.println("error while inserting patient data"+e);
      	            JOptionPane.showMessageDialog(null, "error in inserting patient info","Failed!!",
                            JOptionPane.ERROR_MESSAGE);
      	        }

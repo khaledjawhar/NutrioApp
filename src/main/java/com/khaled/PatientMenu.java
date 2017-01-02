@@ -62,9 +62,9 @@ public class PatientMenu extends JMenuBar {
          JMenuItem addPatient = new JMenuItem(fileItems[0]);         
          addPatient.addActionListener(addPatientListener);
          fileMenu.add(addPatient);
-         JMenuItem addVisitInfo = new JMenuItem(fileItems[1]);         
-         addVisitInfo.addActionListener(addVisitInfoListener);
-         fileMenu.add(addVisitInfo);
+         JMenuItem addVisit = new JMenuItem(fileItems[1]);         
+         addVisit.addActionListener(addVisitInfoListener);
+         fileMenu.add(addVisit);
          JMenuItem editPatientInfo = new JMenuItem(editItems[0]);
          editPatientInfo.addActionListener(editPatientInfoListener);
          editMenu.add(editPatientInfo);
