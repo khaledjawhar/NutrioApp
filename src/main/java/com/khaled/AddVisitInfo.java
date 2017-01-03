@@ -102,11 +102,22 @@ public class AddVisitInfo  extends JFrame{
             if(ae.getSource()==insert)
             {
             	 try {
-            		
+            		 DataBase db= new DataBase();    
+      	        	 con=db.connect(); 
+            		 preStatement = con.prepareStatement("insert into patient_visit (patient_name,visit_number,visit_note) values (?,?,?)");
+            		 preStatement.setString(1, combo.getSelectedItem().toString()); //this replaces the 1st  "?" in the query for username
+      	        	 preStatement.setString(2, t_number.getText());    //this replaces the 2st  "?" in the query for password
+      	        	 preStatement.setString(3, visitNote.getText());
+      	        	 preStatement.executeUpdate();
+       	             JOptionPane.showMessageDialog(null, "You have inserted patient visit info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
+       	           preStatement.close();
+       	           t_number.setText("");
+       	           visitNote.setText("");
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	            JOptionPane.showMessageDialog(null, "error in inserting patient info","Failed!!",
+     	            JOptionPane.showMessageDialog(null, "error in inserting patient visit info","Failed!!",
                            JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 

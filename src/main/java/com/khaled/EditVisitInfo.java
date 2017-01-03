@@ -110,11 +110,21 @@ public class EditVisitInfo  extends JFrame{
             if(ae.getSource()==view)
             {
             	 try {
+            		 DataBase db= new DataBase();    
+         			 con=db.connect(); 
+         			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_visit where patient_name=?");
+         			 preStatement.setString(1,combo.getSelectedItem().toString());
+         			 rs=preStatement.executeQuery();
+         	         if(rs.next())
+         	         {
+         	        	t_number.setText(rs.getString("visit_number"));
+         	        	visitNote.setText(rs.getString("visit_note"));
+         	         }
             		
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	            JOptionPane.showMessageDialog(null, "error in inserting patient info","Failed!!",
+     	            JOptionPane.showMessageDialog(null, "error in pulling patient info","Failed!!",
                            JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 
@@ -133,11 +143,19 @@ public class EditVisitInfo  extends JFrame{
             if(ae.getSource()==update)
             {
             	 try {
-            		
-     	           
+            		 DataBase db= new DataBase();    
+        			 con=db.connect(); 
+        			 preStatement = con.prepareStatement("UPDATE nutriodb.patient_visit SET visit_number=?,visit_note=? WHERE patient_name=?");
+        			 preStatement.setString(1, t_number.getText());    //this replaces the 2st  "?" in the query for password
+       	        	 preStatement.setString(2, visitNote.getText());
+       	        	 preStatement.setString(3, combo.getSelectedItem().toString());
+      	        	 preStatement.executeUpdate();
+      	        	 JOptionPane.showMessageDialog(null, "You have updated patient visit info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
+      	        	preStatement.close();
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	            JOptionPane.showMessageDialog(null, "error in inserting patient info","Failed!!",
+     	            JOptionPane.showMessageDialog(null, "error in updating patient visit info","Failed!!",
                            JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 
@@ -156,11 +174,20 @@ public class EditVisitInfo  extends JFrame{
             if(ae.getSource()==delete)
             {
             	 try {
+            		 DataBase db= new DataBase();    
+        			 con=db.connect(); 
+        			 preStatement = con.prepareStatement("DELETE FROM nutriodb.patient_visit where patient_name=?");
+        			 preStatement.setString(1,combo.getSelectedItem().toString());
+        			 preStatement.executeUpdate();
+        			 t_number.setText("");
+          	         visitNote.setText("");
+        			 JOptionPane.showMessageDialog(null, "You have deleted patient visit info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
             		
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	            JOptionPane.showMessageDialog(null, "error in inserting patient info","Failed!!",
+     	            JOptionPane.showMessageDialog(null, "error in deleting patient visit info","Failed!!",
                            JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 

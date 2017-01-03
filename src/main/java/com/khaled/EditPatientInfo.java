@@ -207,11 +207,17 @@ public class EditPatientInfo extends JFrame{
             if(ae.getSource()==delete)
             {
             	try {
-           		 DataBase db= new DataBase();    
+           		     DataBase db= new DataBase();    
         			 con=db.connect(); 
         			 preStatement = con.prepareStatement("DELETE FROM nutriodb.patient where patient_name=?");
         			 preStatement.setString(1,combo.getSelectedItem().toString());
         			 preStatement.executeUpdate();
+      	             t_address.setText("");
+      	             t_phone.setText("");
+      	             medicalHisotry.setText("");
+      	             t_workOccupation.setText("");
+      	             medications.setText("");
+      	             supplements.setText("");
         			 JOptionPane.showMessageDialog(null, "You have deleted patient info sucessfully","Success",
                              JOptionPane.INFORMATION_MESSAGE);
     	        } catch (Exception e) {
@@ -235,8 +241,8 @@ public class EditPatientInfo extends JFrame{
             if(ae.getSource()==update)
             {
             	try {
-            	 String patient_allergies,patient_previousDiets;	
-           		 DataBase db= new DataBase();    
+            	     String patient_allergies,patient_previousDiets;	
+           		     DataBase db= new DataBase();    
         			 con=db.connect(); 
         			 preStatement = con.prepareStatement("UPDATE nutriodb.patient SET patient_address=?,patient_phone=?,patient_medicalhistory=?,patient_workoccupation=?,patient_allergies=?,patient_previousdiets=?,patient_medications=?,patient_supplements=? WHERE patient_name=?");
         			 if(patient_allergies_yes.isSelected())
