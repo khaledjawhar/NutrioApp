@@ -24,8 +24,6 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
-import com.khaled.EditVisitInfo.handler;
-
 public class FoodRecall extends JFrame{
 	Connection con;
  	PreparedStatement preStatement;
@@ -199,6 +197,7 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==chooseItemFromList)
             {
             	 try {
+            		ProcessNutritionixData pnd=new ProcessNutritionixData();
             	
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
