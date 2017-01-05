@@ -38,13 +38,13 @@ public class FoodRecall extends JFrame{
 		        "Don", "Kimi", "Kelly", "Keagan"
 		    };
 
-	JLabel l_patient_name,l_filter_by_name,l_food_type,l_item_name,l_number_of_units;
-	JTextField t_filter_by_name,t_number_of_units,t_item_name;
+	JLabel l_patient_name,l_filter_by_name,l_food_type,l_item_name,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
+	JTextField t_filter_by_name,t_number_of_units,t_item_name,t_food_recall_date,t_food_recall_number,t_visit_date;
 	JButton AddItemToTable,chooseItemFromList,saveItems,loadItemsByPatientName,generateReport;
 	FilteredJList foodList;
 	//headers for the table
 	String[] columns = new String[] {
-			"Id", "Name", "Hourly Rate", "Part Time"
+			"meal Type","Food Type", "Weight", "Calories", "Protein","Carbohydrate","Fats"
 	};
     Object[][] data = new Object[][] {
 	};
@@ -52,6 +52,9 @@ public class FoodRecall extends JFrame{
 	FoodRecall()
 	{
 		 foodTable = new JTable(data, columns);
+		 JScrollPane scrollPane = new JScrollPane(foodTable,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+		 Dimension tableSize = new Dimension(1000, 450);
+		 foodTable.setPreferredSize(tableSize);
 		 List<String> myWords = new ArrayList<String>();
 			try{
 				DataBase db= new DataBase();    
@@ -82,11 +85,7 @@ public class FoodRecall extends JFrame{
 	     for (int i=0; i<listItems.length; i++)
 	    	 foodList.addItem (listItems[i]);
 	     // add to gui
-	     JScrollPane pane =
-	         new JScrollPane (foodList, 
-	                          ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, 
-	                          ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
+	     JScrollPane pane =new JScrollPane (foodList,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	     AddItemToTable=new JButton("Add Item To Table");
 	     AddItemToTable.addActionListener(handle);
 	     chooseItemFromList=new JButton("Choose Item From List");
@@ -99,8 +98,18 @@ public class FoodRecall extends JFrame{
 	     generateReport.addActionListener(handle);
 		 l_patient_name=new JLabel("Patient Name");
 		 l_filter_by_name=new JLabel("Filter By Name");
-		 l_food_type=new JLabel("Visit Note");
+		 l_number_of_units=new JLabel("Number of Units");
+		 l_item_name=new JLabel("Item Name");
+		 l_food_type=new JLabel("Food Type");
+		 l_food_recall_date=new JLabel("Food Recall Date");
+		 l_food_recall_number=new JLabel("Food Recall Number");
+		 l_visit_date=new JLabel("Visit Date");
 		 t_filter_by_name=new JTextField();
+		 t_number_of_units=new JTextField();
+		 t_item_name=new JTextField();
+		 t_food_recall_date=new JTextField();;
+		 t_food_recall_number=new JTextField();;
+		 t_visit_date=new JTextField();;
 		 setLayout(null);
 		 searchable = new StringSearchable(myWords);
 		 combo = new AutocompleteJComboBox(searchable);
@@ -116,10 +125,44 @@ public class FoodRecall extends JFrame{
 	     add(l_food_type);
 	     pane.setBounds(124, 65, 200, 400);
 	     add(pane);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	    setExtendedState(JFrame.MAXIMIZED_BOTH); 
-		setJMenuBar(new PatientMenu());
-		setVisible(true);
+	     l_item_name.setBounds(20,480, 100, 20);
+	     add(l_item_name);
+	     t_item_name.setBounds(124,480,200,20);
+	     add(t_item_name);
+	     l_number_of_units.setBounds(20, 500, 100, 20);
+	     add(l_number_of_units);
+	     t_number_of_units.setBounds(124,500,200,20);
+	     add(t_number_of_units);
+	     chooseItemFromList.setBounds(20,530,200,20);
+	     add(chooseItemFromList);
+	     AddItemToTable.setBounds(240,530,200,20);
+	     add(AddItemToTable);
+	     l_food_recall_number.setBounds(380,20,120,20);
+		 add(l_food_recall_number);
+		 t_food_recall_number.setBounds(520,20,200,20);
+		 add(t_food_recall_number);
+		 l_food_recall_date.setBounds(740, 20,120 ,20 );
+		 add(l_food_recall_date);
+		 t_food_recall_date.setBounds(880, 20,200 ,20 );
+		 add(t_food_recall_date);
+		 l_visit_date.setBounds(1100, 20, 100, 20);
+		 add(l_visit_date);
+		 t_visit_date.setBounds(1200, 20, 150, 20);
+		 add(t_visit_date);
+		 saveItems.setBounds(800,530,200,20);
+		 add(saveItems);
+		 saveItems.setBounds(600,530,200,20);
+		 add(saveItems);
+		 loadItemsByPatientName.setBounds(820,530,200,20);
+		 add(loadItemsByPatientName);
+		 generateReport.setBounds(1040,530,200,20);
+		 add(generateReport);
+		 scrollPane.setBounds(340,40,1000,450);
+		 add(scrollPane);
+		 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		 setJMenuBar(new PatientMenu());
+		 setVisible(true);
 	}
 	
 	   //an inner class .You can also write as a separate class
