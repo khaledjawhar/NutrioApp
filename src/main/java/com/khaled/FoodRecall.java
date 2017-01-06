@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -36,9 +35,9 @@ public class FoodRecall extends JFrame{
 		        "Don", "Kimi", "Kelly", "Keagan"
 		    };
 
-	JLabel l_patient_name,l_filter_by_name,l_food_type,l_item_name,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
-	JTextField t_filter_by_name,t_number_of_units,t_item_name,t_food_recall_date,t_food_recall_number,t_visit_date;
-	JButton AddItemToTable,chooseItemFromList,saveItems,loadItemsByPatientName,generateReport;
+	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
+	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
+	JButton AddItemToTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
 	FilteredJList foodList;
 	//headers for the table
 	String[] columns = new String[] {
@@ -86,8 +85,8 @@ public class FoodRecall extends JFrame{
 	     JScrollPane pane =new JScrollPane (foodList,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	     AddItemToTable=new JButton("Add Item To Table");
 	     AddItemToTable.addActionListener(handle);
-	     chooseItemFromList=new JButton("Choose Item From List");
-	     chooseItemFromList.addActionListener(handle);
+	     searchItem=new JButton("Search Item");
+	     searchItem.addActionListener(handle);
 	     saveItems=new JButton("Save Items in Table");
 	     saveItems.addActionListener(handle);
 	     loadItemsByPatientName=new JButton("Load Items by patient name");
@@ -97,14 +96,12 @@ public class FoodRecall extends JFrame{
 		 l_patient_name=new JLabel("Patient Name");
 		 l_filter_by_name=new JLabel("Filter By Name");
 		 l_number_of_units=new JLabel("Number of Units");
-		 l_item_name=new JLabel("Item Name");
 		 l_food_type=new JLabel("Food Type");
 		 l_food_recall_date=new JLabel("Food Recall Date");
 		 l_food_recall_number=new JLabel("Food Recall Number");
 		 l_visit_date=new JLabel("Visit Date");
 		 t_filter_by_name=new JTextField();
 		 t_number_of_units=new JTextField();
-		 t_item_name=new JTextField();
 		 t_food_recall_date=new JTextField();;
 		 t_food_recall_number=new JTextField();;
 		 t_visit_date=new JTextField();;
@@ -113,27 +110,21 @@ public class FoodRecall extends JFrame{
 		 combo = new AutocompleteJComboBox(searchable);
 		 l_patient_name.setBounds(20, 20, 100, 20);
 	     add(l_patient_name);
-	     combo.setBounds(124, 25, 200, 20);
+	     combo.setBounds(124, 20, 200, 20);
 	     add(combo);
-	     l_filter_by_name.setBounds(20, 40, 100, 20);
-	     add(l_filter_by_name);
-	     foodList.getFilterField().setBounds(124, 45, 200, 20);
+	     searchItem.setBounds(20, 45, 120, 20);
+	     add(searchItem);
+	     foodList.getFilterField().setBounds(145, 45, 175, 20);
 	     add(foodList.getFilterField());
-	     l_food_type.setBounds(20, 60, 100, 20);
+	     l_food_type.setBounds(20, 70, 100, 20);
 	     add(l_food_type);
-	     pane.setBounds(124, 65, 200, 400);
+	     pane.setBounds(124, 70, 200, 400);
 	     add(pane);
-	     l_item_name.setBounds(20,480, 100, 20);
-	     add(l_item_name);
-	     t_item_name.setBounds(124,480,200,20);
-	     add(t_item_name);
 	     l_number_of_units.setBounds(20, 500, 100, 20);
 	     add(l_number_of_units);
 	     t_number_of_units.setBounds(124,500,200,20);
 	     add(t_number_of_units);
-	     chooseItemFromList.setBounds(20,530,200,20);
-	     add(chooseItemFromList);
-	     AddItemToTable.setBounds(240,530,200,20);
+	     AddItemToTable.setBounds(124,530,200,20);
 	     add(AddItemToTable);
 	     l_food_recall_number.setBounds(380,20,120,20);
 		 add(l_food_recall_number);
@@ -194,11 +185,12 @@ public class FoodRecall extends JFrame{
             }//if
             
           //checks if the button clicked
-            if(ae.getSource()==chooseItemFromList)
+            if(ae.getSource()==searchItem)
             {
             	 try {
             		ProcessNutritionixData pnd=new ProcessNutritionixData();
-            	
+            		pnd.searchItem(foodList.getFilterField().getText());
+            		pnd.getItemNutritionfacts(foodList.getFilterField().getText());
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	           
