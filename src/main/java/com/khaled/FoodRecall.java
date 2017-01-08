@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,11 +32,9 @@ public class FoodRecall extends JFrame{
  	handler handle;
 	StringSearchable searchable;
 	AutocompleteJComboBox combo;
-	 String[] listItems = {
-		        "Chris", "Joshua", "Daniel", "Michael",
-		        "Don", "Kimi", "Kelly", "Keagan"
-		    };
-
+	ArrayList<Food> food;
+	String[] listItems = {
+		    }; 
 	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
 	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
 	JButton AddItemToTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
@@ -48,6 +48,7 @@ public class FoodRecall extends JFrame{
 	JTable foodTable;
 	FoodRecall()
 	{
+		 food=new ArrayList<Food>();
 		 foodTable = new JTable(data, columns);
 		 JScrollPane scrollPane = new JScrollPane(foodTable,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		 Dimension tableSize = new Dimension(1000, 450);
@@ -79,9 +80,6 @@ public class FoodRecall extends JFrame{
 				}
 	     handle =new handler();	
 	     foodList = new FilteredJList();
-	     for (int i=0; i<listItems.length; i++)
-	    	 foodList.addItem (listItems[i]);
-	     // add to gui
 	     JScrollPane pane =new JScrollPane (foodList,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	     AddItemToTable=new JButton("Add Item To Table");
 	     AddItemToTable.addActionListener(handle);
@@ -189,8 +187,17 @@ public class FoodRecall extends JFrame{
             {
             	 try {
             		ProcessNutritionixData pnd=new ProcessNutritionixData();
-            		pnd.searchItem(foodList.getFilterField().getText());
-            		pnd.getItemNutritionfacts(foodList.getFilterField().getText());
+            		//pnd.getItemNutritionfacts(foodList.getFilterField().getText());
+            		food=pnd.searchItem(foodList.getFilterField().getText());
+            		for (int counter = 0; counter < food.size(); counter++) { 	
+            			  foodList.addItem(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
+            			  System.out.print("food name is "+food.get(counter).getFood_type()+"/"); 
+            	          System.out.print("food brand is "+food.get(counter).getFood_brand()+"/"); 		
+            	          System.out.print("food protein is "+food.get(counter).getFood_protein()+"/"); 	
+            	          System.out.print("food carbohydrate is "+food.get(counter).getFood_carbohydrate()+"/"); 	
+            	          System.out.print("food calories is "+food.get(counter).getFood_calories()+"/"); 	
+            	          System.out.println("food fat is "+food.get(counter).getFood_fat()); 	
+            	    } 
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	           
