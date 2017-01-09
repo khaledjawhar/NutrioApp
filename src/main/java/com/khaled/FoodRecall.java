@@ -30,6 +30,8 @@ import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.khaled.FilteredJList.FilterModel;
 
@@ -41,6 +43,7 @@ public class FoodRecall extends JFrame{
 	StringSearchable searchable;
 	AutocompleteJComboBox combo;
 	ArrayList<Food> food;
+	ArrayList<String> defaultValues;
 	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
 	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
 	JButton AddItemToTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
@@ -50,7 +53,7 @@ public class FoodRecall extends JFrame{
 	private int fieldLength = 0;
 	//headers for the table
 	String[] columns = new String[] {
-			"meal Type","Food Type", "Weight", "Calories", "Protein","Carbohydrate","Fats"
+			"meal Type","Food Type","Food Servings","Weight", "Calories", "Protein","Carbohydrate","Fats"
 	};
     Object[][] data = new Object[][] {
 	};
@@ -58,6 +61,7 @@ public class FoodRecall extends JFrame{
 	FoodRecall()
 	{
 		 food=new ArrayList<Food>();
+		 defaultValues=new ArrayList<String>();
 		 foodTable = new JTable(data, columns);
 		 JScrollPane scrollPane = new JScrollPane(foodTable,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		 Dimension tableSize = new Dimension(1000, 450);
@@ -161,41 +165,34 @@ public class FoodRecall extends JFrame{
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		 setJMenuBar(new PatientMenu());
 		 setVisible(true);
+		 t_filter_by_name.getDocument().addDocumentListener(new DocumentListener(){
+	            @Override public void insertUpdate(DocumentEvent e) { filter(); }
+	            @Override public void removeUpdate(DocumentEvent e) { filter(); }
+	            @Override public void changedUpdate(DocumentEvent e) {}
+	            private void filter() {
+	                String filter = t_filter_by_name.getText();
+	                filterModel((DefaultListModel<String>)foodList.getModel(), filter);
+	            }
+	     });
+
 	}
 	
+	 public void filterModel(DefaultListModel<String> model, String filter) {
+	        for (String s : defaultValues) {
+	            if (!s.startsWith(filter)) {
+	                if (model.contains(s)) {
+	                    model.removeElement(s);
+	                }
+	            } else {
+	                if (!model.contains(s)) {
+	                    model.addElement(s);
+	                }
+	            }
+	        }
+	 }
+
 	
 	
-	private void filterList() {
-		// Setting up the environment for the logic
-		int start = 0;
-		int itemIx = 0;
-		// Here the glitch that one should remeber
-		// Sets hold NO DUPLICATE values... :)
-		Set resultSet = new HashSet();
-		filteredModel = new DefaultListModel();
-		// Following logic is used to find an item in JList
-		String prefix = t_filter_by_name.getText();
-		javax.swing.text.Position.Bias direction = javax.swing.text.Position.Bias.Forward;
-		for (int i = 0; i < foodList.getModel().getSize(); i++) {
-			itemIx = foodList.getNextMatch(prefix, start, direction);
-			// Following try-catch blog will enhance the user friendliness
-			try {
-				resultSet.add(foodList.getModel().getElementAt(itemIx));
-			} catch(ArrayIndexOutOfBoundsException e) {
-				JOptionPane.showMessageDialog(this, "No entry is matched with your query....");
-				t_filter_by_name.setText("");
-				return;
-			}
-			start++;
-		}
-		Iterator itr = resultSet.iterator();
-		// Adding the filtered results to the new model
-		while (itr.hasNext()) {
-			filteredModel.addElement(itr.next());
-		}
-		// Setting the model to the list again
-		foodList.setModel(filteredModel);
-		}
 	
 	
 	   //an inner class .You can also write as a separate class
@@ -203,29 +200,7 @@ public class FoodRecall extends JFrame{
     {
     	Connection con;
     	PreparedStatement preStatement; 
-    	public void keyReleased(KeyEvent e) {
-    		// In case of deleting a previously entered character by hitting backspace maybe...
-    		 if(e.getSource()==t_filter_by_name)
-    		 {	 
-    			 if (fieldLength > t_filter_by_name.getText().length()) {
-    				 foodList.setModel(listModel);
-    				 filterList();
-    			 } 
-    			 else {
-    				 filterList();
-    			 }
-    		 }
-    	}
     	
-    	// Here is the implementation of keyReleased method
-    	public void keyPressed(KeyEvent e) {
-    	// Just getting the length of the text field
-    	// before key is pressed...
-    		if(e.getSource()==t_filter_by_name)
-    		{	
-    			fieldLength = t_filter_by_name.getText().length();
-    		}
-    	}
 
         //must implement method
         //This is triggered whenever the user clicks the login button
@@ -257,10 +232,12 @@ public class FoodRecall extends JFrame{
             {
             	 try {
             		listModel.removeAllElements(); 
+            		defaultValues.clear();
             		ProcessNutritionixData pnd=new ProcessNutritionixData();
             		food=pnd.searchItem(t_filter_by_name.getText());
             		for (int counter = 0; counter < food.size(); counter++) {
             			 listModel.addElement(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
+            			 defaultValues.add(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
             			 System.out.print("food name is "+food.get(counter).getFood_type()+"/"); 
             	         System.out.print("food brand is "+food.get(counter).getFood_brand()+"/"); 		
             	         System.out.print("food protein is "+food.get(counter).getFood_protein()+"/"); 	
@@ -330,7 +307,12 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==AddItemToTable)
             {
             	 try {
-            		
+            		 String selected = (String) foodList.getSelectedValue();
+            		 for (Food f : food) {
+            			 if(selected.equals(f.getFood_type()+",brand: "+f.getFood_brand())){
+            				 //add the food recall to the database
+            			 }
+            		 }
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
