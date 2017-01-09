@@ -5,17 +5,23 @@ import java.awt.GridLayout;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,6 +31,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 
+import com.khaled.FilteredJList.FilterModel;
+
 public class FoodRecall extends JFrame{
 	Connection con;
  	PreparedStatement preStatement;
@@ -33,12 +41,13 @@ public class FoodRecall extends JFrame{
 	StringSearchable searchable;
 	AutocompleteJComboBox combo;
 	ArrayList<Food> food;
-	String[] listItems = {
-		    }; 
 	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
 	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
 	JButton AddItemToTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
-	FilteredJList foodList;
+	JList foodList;
+	DefaultListModel listModel;
+	private DefaultListModel filteredModel = null;
+	private int fieldLength = 0;
 	//headers for the table
 	String[] columns = new String[] {
 			"meal Type","Food Type", "Weight", "Calories", "Protein","Carbohydrate","Fats"
@@ -79,8 +88,9 @@ public class FoodRecall extends JFrame{
 						}  
 				}
 	     handle =new handler();	
-	     foodList = new FilteredJList();
-	     JScrollPane pane =new JScrollPane (foodList,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+	     listModel = new DefaultListModel();
+	     foodList=new JList(listModel);
+	     JScrollPane pane =new JScrollPane (foodList,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 	     AddItemToTable=new JButton("Add Item To Table");
 	     AddItemToTable.addActionListener(handle);
 	     searchItem=new JButton("Search Item");
@@ -99,6 +109,7 @@ public class FoodRecall extends JFrame{
 		 l_food_recall_number=new JLabel("Food Recall Number");
 		 l_visit_date=new JLabel("Visit Date");
 		 t_filter_by_name=new JTextField();
+		 t_filter_by_name.addActionListener(handle);
 		 t_number_of_units=new JTextField();
 		 t_food_recall_date=new JTextField();;
 		 t_food_recall_number=new JTextField();;
@@ -112,8 +123,8 @@ public class FoodRecall extends JFrame{
 	     add(combo);
 	     searchItem.setBounds(20, 45, 120, 20);
 	     add(searchItem);
-	     foodList.getFilterField().setBounds(145, 45, 175, 20);
-	     add(foodList.getFilterField());
+	     t_filter_by_name.setBounds(145, 45, 175, 20);
+	     add(t_filter_by_name);
 	     l_food_type.setBounds(20, 70, 100, 20);
 	     add(l_food_type);
 	     pane.setBounds(124, 70, 200, 400);
@@ -152,11 +163,70 @@ public class FoodRecall extends JFrame{
 		 setVisible(true);
 	}
 	
+	
+	
+	private void filterList() {
+		// Setting up the environment for the logic
+		int start = 0;
+		int itemIx = 0;
+		// Here the glitch that one should remeber
+		// Sets hold NO DUPLICATE values... :)
+		Set resultSet = new HashSet();
+		filteredModel = new DefaultListModel();
+		// Following logic is used to find an item in JList
+		String prefix = t_filter_by_name.getText();
+		javax.swing.text.Position.Bias direction = javax.swing.text.Position.Bias.Forward;
+		for (int i = 0; i < foodList.getModel().getSize(); i++) {
+			itemIx = foodList.getNextMatch(prefix, start, direction);
+			// Following try-catch blog will enhance the user friendliness
+			try {
+				resultSet.add(foodList.getModel().getElementAt(itemIx));
+			} catch(ArrayIndexOutOfBoundsException e) {
+				JOptionPane.showMessageDialog(this, "No entry is matched with your query....");
+				t_filter_by_name.setText("");
+				return;
+			}
+			start++;
+		}
+		Iterator itr = resultSet.iterator();
+		// Adding the filtered results to the new model
+		while (itr.hasNext()) {
+			filteredModel.addElement(itr.next());
+		}
+		// Setting the model to the list again
+		foodList.setModel(filteredModel);
+		}
+	
+	
 	   //an inner class .You can also write as a separate class
     class handler implements ActionListener
     {
     	Connection con;
     	PreparedStatement preStatement; 
+    	public void keyReleased(KeyEvent e) {
+    		// In case of deleting a previously entered character by hitting backspace maybe...
+    		 if(e.getSource()==t_filter_by_name)
+    		 {	 
+    			 if (fieldLength > t_filter_by_name.getText().length()) {
+    				 foodList.setModel(listModel);
+    				 filterList();
+    			 } 
+    			 else {
+    				 filterList();
+    			 }
+    		 }
+    	}
+    	
+    	// Here is the implementation of keyReleased method
+    	public void keyPressed(KeyEvent e) {
+    	// Just getting the length of the text field
+    	// before key is pressed...
+    		if(e.getSource()==t_filter_by_name)
+    		{	
+    			fieldLength = t_filter_by_name.getText().length();
+    		}
+    	}
+
         //must implement method
         //This is triggered whenever the user clicks the login button
         public void actionPerformed(ActionEvent ae)
@@ -186,18 +256,18 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==searchItem)
             {
             	 try {
+            		listModel.removeAllElements(); 
             		ProcessNutritionixData pnd=new ProcessNutritionixData();
-            		//pnd.getItemNutritionfacts(foodList.getFilterField().getText());
-            		food=pnd.searchItem(foodList.getFilterField().getText());
-            		for (int counter = 0; counter < food.size(); counter++) { 	
-            			  foodList.addItem(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
-            			  System.out.print("food name is "+food.get(counter).getFood_type()+"/"); 
-            	          System.out.print("food brand is "+food.get(counter).getFood_brand()+"/"); 		
-            	          System.out.print("food protein is "+food.get(counter).getFood_protein()+"/"); 	
-            	          System.out.print("food carbohydrate is "+food.get(counter).getFood_carbohydrate()+"/"); 	
-            	          System.out.print("food calories is "+food.get(counter).getFood_calories()+"/"); 	
-            	          System.out.println("food fat is "+food.get(counter).getFood_fat()); 	
-            	    } 
+            		food=pnd.searchItem(t_filter_by_name.getText());
+            		for (int counter = 0; counter < food.size(); counter++) {
+            			 listModel.addElement(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
+            			 System.out.print("food name is "+food.get(counter).getFood_type()+"/"); 
+            	         System.out.print("food brand is "+food.get(counter).getFood_brand()+"/"); 		
+            	         System.out.print("food protein is "+food.get(counter).getFood_protein()+"/"); 	
+            	         System.out.print("food carbohydrate is "+food.get(counter).getFood_carbohydrate()+"/"); 	
+            	         System.out.print("food calories is "+food.get(counter).getFood_calories()+"/"); 	
+            	         System.out.println("food fat is "+food.get(counter).getFood_fat()); 	
+            	    }
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	           

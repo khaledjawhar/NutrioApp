@@ -28,6 +28,7 @@ public class FilteredJList extends JList {
 
 	    public void addItem (Object o) {
 	        ((FilterModel)getModel()).addElement(o);
+	    	
 	    }
 
 	    public JTextField getFilterField() {
@@ -66,7 +67,7 @@ public class FilteredJList extends JList {
          }
      }
 	    
-	    class FilterField extends JTextField implements DocumentListener { 
+	     class FilterField extends JTextField implements DocumentListener { 
 	    	   public FilterField (int width) { 
 	    	       super(width);
 	    	getDocument().addDocumentListener (this);
