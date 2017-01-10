@@ -46,7 +46,7 @@ public class FoodRecall extends JFrame{
 	ArrayList<String> defaultValues;
 	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date,l_mealType;
 	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
-	JButton AddItemToTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
+	JButton addItemToTable,removeItemFromTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
 	JList foodList;
 	DefaultListModel listModel;
 	TableModel model;
@@ -92,11 +92,13 @@ public class FoodRecall extends JFrame{
 	     listModel = new DefaultListModel();
 	     foodList=new JList(listModel);
 	     JScrollPane pane =new JScrollPane (foodList,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
-	     AddItemToTable=new JButton("Add Item To Table");
-	     AddItemToTable.addActionListener(handle);
+	     addItemToTable=new JButton("Add Item To Table");
+	     addItemToTable.addActionListener(handle);
+	     removeItemFromTable=new JButton("Remove Item from Table");
+	     removeItemFromTable.addActionListener(handle);
 	     searchItem=new JButton("Search Item");
 	     searchItem.addActionListener(handle);
-	     saveItems=new JButton("Save Items in Table");
+	     saveItems=new JButton("Save Items");
 	     saveItems.addActionListener(handle);
 	     loadItemsByPatientName=new JButton("Load Items by patient name");
 	     loadItemsByPatientName.addActionListener(handle);
@@ -143,8 +145,10 @@ public class FoodRecall extends JFrame{
 	     add(l_mealType);
 	     mealType.setBounds(124, 530, 200, 20);
 	     add(mealType);
-	     AddItemToTable.setBounds(124,560,200,20);
-	     add(AddItemToTable);
+	     addItemToTable.setBounds(124,560,200,20);
+	     add(addItemToTable);
+	     removeItemFromTable.setBounds(124,590,200,20);
+	     add(removeItemFromTable);
 	     l_food_recall_number.setBounds(380,20,120,20);
 		 add(l_food_recall_number);
 		 t_food_recall_number.setBounds(520,20,200,20);
@@ -216,9 +220,11 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==saveItems)
             {
             	 try {
-            		
-            		
-     	           
+            		 for(int row = 0;row < model.getRowCount();row++) {
+            			     for(int col = 0;col < model.getColumnCount();col++) {
+            			    	 //insert items from the table into the database
+            			     }
+            	     }
      	        } catch (Exception e) {
      	        }
      	        finally 
@@ -292,6 +298,7 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==loadItemsByPatientName)
             {
             	 try {
+
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	           
@@ -309,7 +316,30 @@ public class FoodRecall extends JFrame{
             }//if
             
           //checks if the button clicked
-            if(ae.getSource()==AddItemToTable)
+            if(ae.getSource()==removeItemFromTable)
+            {
+            	 try {
+            		   int rowIndex = foodTable.getSelectedRow();
+            		   model.deleteRow(rowIndex);
+
+     	        } catch (Exception e) {
+     	            // TODO Auto-generated catch block
+     	           
+     	        }
+     	        finally 
+     			{  
+     			   if( con != null )
+     					try {
+     						con.close();
+     					} catch (SQLException e) {
+     						// TODO Auto-generated catch block
+     						e.printStackTrace();
+     					}  
+     			}
+            }//if
+            
+          //checks if the button clicked
+            if(ae.getSource()==addItemToTable)
             {
             	 try {
             		 String selected = (String) foodList.getSelectedValue();
