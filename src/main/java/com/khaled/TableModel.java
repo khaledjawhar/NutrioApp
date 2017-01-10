@@ -14,11 +14,21 @@ public class TableModel extends AbstractTableModel{
 	 this.rowData = data;
 	 }
 	 public List<Food> getRowData() {
-			return rowData;
-		}
-		public void setRowData(List<Food> list) {
-			this.rowData = list;
-		}
+		return rowData;
+	}
+	public void setRowData(List<Food> list) {
+		this.rowData = list;
+	}
+	public void addRow(Food food)
+    {
+		this.rowData.add(food);
+        fireTableRowsInserted(this.rowData.size() - 1, this.rowData.size() - 1);
+   }
+	
+	 public void deleteRow(int rowNumber) {
+		 this.rowData.remove(rowNumber);
+		 fireTableRowsDeleted(rowNumber, rowNumber);
+  }
 	@Override
 	public String getColumnName(int column)
 	{

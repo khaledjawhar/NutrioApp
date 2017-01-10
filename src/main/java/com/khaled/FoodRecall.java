@@ -292,7 +292,6 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==loadItemsByPatientName)
             {
             	 try {
-            	
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	           
@@ -319,7 +318,7 @@ public class FoodRecall extends JFrame{
             				 //add the food recall to the table
             				 f.setFood_servings(t_number_of_units.getText());
             				 f.setMealType(mealType.getSelectedItem().toString());
-            				 model.getRowData().add(f);
+            				 model.addRow(f);
             			 }
             		 }
      	           
