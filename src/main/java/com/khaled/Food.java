@@ -7,6 +7,8 @@ public class Food {
 	private String food_protein;
 	private String food_carbohydrate;
 	private String food_fat;
+	private String mealType;
+	private String food_servings;
 	public String getFood_type() {
 		return food_type;
 	}
@@ -42,6 +44,18 @@ public class Food {
 	}
 	public void setFood_fat(String food_fat) {
 		this.food_fat = food_fat;
+	}
+	public String getMealType() {
+		return mealType;
+	}
+	public void setMealType(String mealType) {
+		this.mealType = mealType;
+	}
+	public String getFood_servings() {
+		return food_servings;
+	}
+	public void setFood_servings(String food_servings) {
+		this.food_servings = food_servings;
 	}
     
 }

@@ -16,9 +16,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -32,7 +32,6 @@ import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-
 import com.khaled.FilteredJList.FilterModel;
 
 public class FoodRecall extends JFrame{
@@ -42,27 +41,25 @@ public class FoodRecall extends JFrame{
  	handler handle;
 	StringSearchable searchable;
 	AutocompleteJComboBox combo;
+	JComboBox mealType;
 	ArrayList<Food> food;
 	ArrayList<String> defaultValues;
-	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date;
+	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date,l_mealType;
 	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
 	JButton AddItemToTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
 	JList foodList;
 	DefaultListModel listModel;
+	TableModel model;
 	private DefaultListModel filteredModel = null;
 	private int fieldLength = 0;
-	//headers for the table
-	String[] columns = new String[] {
-			"meal Type","Food Type","Food Servings","Weight", "Calories", "Protein","Carbohydrate","Fats"
-	};
-    Object[][] data = new Object[][] {
-	};
 	JTable foodTable;
 	FoodRecall()
 	{
 		 food=new ArrayList<Food>();
 		 defaultValues=new ArrayList<String>();
-		 foodTable = new JTable(data, columns);
+		//headers for the table
+	     model = new TableModel(food);
+	     foodTable=new JTable(model);
 		 JScrollPane scrollPane = new JScrollPane(foodTable,ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 		 Dimension tableSize = new Dimension(1000, 450);
 		 foodTable.setPreferredSize(tableSize);
@@ -112,12 +109,17 @@ public class FoodRecall extends JFrame{
 		 l_food_recall_date=new JLabel("Food Recall Date");
 		 l_food_recall_number=new JLabel("Food Recall Number");
 		 l_visit_date=new JLabel("Visit Date");
+		 l_mealType=new JLabel("Meal Type");
 		 t_filter_by_name=new JTextField();
 		 t_filter_by_name.addActionListener(handle);
 		 t_number_of_units=new JTextField();
 		 t_food_recall_date=new JTextField();;
 		 t_food_recall_number=new JTextField();;
 		 t_visit_date=new JTextField();;
+		 mealType=new JComboBox();
+		 mealType.addItem("BreakFast");
+		 mealType.addItem("Lunch");
+		 mealType.addItem("Dinner");
 		 setLayout(null);
 		 searchable = new StringSearchable(myWords);
 		 combo = new AutocompleteJComboBox(searchable);
@@ -137,7 +139,11 @@ public class FoodRecall extends JFrame{
 	     add(l_number_of_units);
 	     t_number_of_units.setBounds(124,500,200,20);
 	     add(t_number_of_units);
-	     AddItemToTable.setBounds(124,530,200,20);
+	     l_mealType.setBounds(20, 530, 100, 20);
+	     add(l_mealType);
+	     mealType.setBounds(124, 530, 200, 20);
+	     add(mealType);
+	     AddItemToTable.setBounds(124,560,200,20);
 	     add(AddItemToTable);
 	     l_food_recall_number.setBounds(380,20,120,20);
 		 add(l_food_recall_number);
@@ -310,7 +316,10 @@ public class FoodRecall extends JFrame{
             		 String selected = (String) foodList.getSelectedValue();
             		 for (Food f : food) {
             			 if(selected.equals(f.getFood_type()+",brand: "+f.getFood_brand())){
-            				 //add the food recall to the database
+            				 //add the food recall to the table
+            				 f.setFood_servings(t_number_of_units.getText());
+            				 f.setMealType(mealType.getSelectedItem().toString());
+            				 model.getRowData().add(f);
             			 }
             		 }
      	           
