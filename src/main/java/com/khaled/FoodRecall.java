@@ -346,9 +346,19 @@ public class FoodRecall extends JFrame{
             		 for (Food f : food) {
             			 if(selected.equals(f.getFood_type()+",brand: "+f.getFood_brand())){
             				 //add the food recall to the table
-            				 f.setFood_servings(t_number_of_units.getText());
-            				 f.setMealType(mealType.getSelectedItem().toString());
-            				 model.addRow(f);
+            				 Food food_iter=f;
+            				 if(t_number_of_units.getText().equals(""))
+            				 {
+            					 t_number_of_units.setText("1");
+            				 }         				 
+            			     food_iter.setFood_servings(t_number_of_units.getText());
+            				 food_iter.setMealType(mealType.getSelectedItem().toString());
+            				 float quantity=Float.parseFloat(t_number_of_units.getText());
+            				 food_iter.setFood_calories(Float.toString(quantity*Float.parseFloat(f.getFood_calories())));
+            				 food_iter.setFood_protein(Float.toString(quantity*Float.parseFloat(f.getFood_protein())));
+            				 food_iter.setFood_carbohydrate(Float.toString(quantity*Float.parseFloat(f.getFood_carbohydrate())));
+            				 food_iter.setFood_fat(Float.toString(quantity*Float.parseFloat(f.getFood_fat())));
+            				 model.addRow(food_iter);
             			 }
             		 }
      	           
