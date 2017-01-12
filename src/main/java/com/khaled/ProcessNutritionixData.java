@@ -18,7 +18,7 @@ public class ProcessNutritionixData {
 		try {
 			String encodedUrl;
 			encodedUrl =URLEncoder.encode(s, "UTF-8");
-			HttpResponse<JsonNode> response = Unirest.get("https://nutritionix-api.p.mashape.com/v1_1/search/"+encodedUrl+"?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_protein%2Cnf_total_carbohydrate")
+			HttpResponse<JsonNode> response = Unirest.get("https://nutritionix-api.p.mashape.com/v1_1/search/"+encodedUrl+"?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_protein%2Cnf_total_carbohydrate%2Cnf_cholesterol%2Cnf_sodium%2Cnf_dietary_fiber%2Cnf_sugars%2Cnf_vitamin_a_dv%2Cnf_vitamin_c_dv%2Cnf_calcium_dv%2Cnf_iron_dv")
 					.header("X-Mashape-Key", "0NfQvugXm6mshSsqKHXEADk2Scjnp1QS5uGjsn3qu5h2EJ3e8l")
 					.header("Accept", "application/json")
 					.asJson();
@@ -43,7 +43,7 @@ public class ProcessNutritionixData {
 	    try {
 			String encodedUrl;
 			encodedUrl =URLEncoder.encode(s, "UTF-8");
-			HttpResponse<JsonNode> response = Unirest.get("https://nutritionix-api.p.mashape.com/v1_1/search/"+encodedUrl+"?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_protein%2Cnf_total_carbohydrate")
+			HttpResponse<JsonNode> response = Unirest.get("https://nutritionix-api.p.mashape.com/v1_1/search/"+encodedUrl+"?fields=item_name%2Citem_id%2Cbrand_name%2Cnf_calories%2Cnf_total_fat%2Cnf_protein%2Cnf_total_carbohydrate%2Cnf_cholesterol%2Cnf_sodium%2Cnf_dietary_fiber%2Cnf_sugars%2Cnf_vitamin_a_dv%2Cnf_vitamin_c_dv%2Cnf_calcium_dv%2Cnf_iron_dv")
 					.header("X-Mashape-Key", "0NfQvugXm6mshSsqKHXEADk2Scjnp1QS5uGjsn3qu5h2EJ3e8l")
 					.header("Accept", "application/json")
 					.asJson();
@@ -59,6 +59,14 @@ public class ProcessNutritionixData {
 		            food.setFood_calories(fields.get("nf_calories").toString());
 		            food.setFood_fat(fields.get("nf_total_fat").toString());
 		            food.setFood_protein(fields.get("nf_protein").toString());
+		            food.setFood_cholesterol(fields.get("nf_cholesterol").toString());
+		            food.setFood_sodium(fields.get("nf_sodium").toString());
+		            food.setFood_dietary_fiber(fields.get("nf_dietary_fiber").toString());
+		            food.setFood_sugars(fields.get("nf_sugars").toString());
+		            food.setFood_vitamin_a(fields.get("nf_vitamin_a_dv").toString());
+		            food.setFood_vitamin_c(fields.get("nf_vitamin_c_dv").toString());
+		            food.setFood_calcium(fields.get("nf_calcium_dv").toString());
+		            food.setFood_iron(fields.get("nf_iron_dv").toString());
 		            items.add(food);
 		        }
 		} catch (UnirestException e) {

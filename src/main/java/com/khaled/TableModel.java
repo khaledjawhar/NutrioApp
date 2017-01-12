@@ -7,7 +7,7 @@ import javax.swing.table.AbstractTableModel;
 public class TableModel extends AbstractTableModel{
 	 private List<Food> rowData; 
 	 private final String[] columnNames = new String[]  {
-			 "mealType","Food Type","FoodServings","Calories", "Protein","Carbohydrate","Fats"
+			 "mealType","Food Type","FoodServings","Calories", "Protein","Carbohydrate","Fats","Cholesterol","Sodium","Dietary Fiber","Sugars","Vitamin A","Vitamin C","Calcium","Iron"
 	};
 	 public TableModel(List<Food> data)
 	 {
@@ -71,6 +71,30 @@ public class TableModel extends AbstractTableModel{
 	}
 	else if(6 == columnIndex) {
 		return row.getFood_fat();
+	}
+	else if(7 == columnIndex) {
+		return row.getFood_cholesterol();
+	}
+	else if(8 == columnIndex) {
+		return row.getFood_sodium();
+	}
+	else if(9 == columnIndex) {
+		return row.getFood_dietary_fiber();
+	}
+	else if(10 == columnIndex) {
+		return row.getFood_sugars();
+	}
+	else if(11 == columnIndex) {
+		return row.getFood_vitamin_a();
+	}
+	else if(12 == columnIndex) {
+		return row.getFood_vitamin_c();
+	}
+	else if(13 == columnIndex) {
+		return row.getFood_calcium();
+	}
+	else if(14 == columnIndex) {
+		return row.getFood_iron();
 	}
 	return null;
     }

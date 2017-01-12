@@ -256,6 +256,14 @@ public class FoodRecall extends JFrame{
             	         System.out.print("food carbohydrate is "+food.get(counter).getFood_carbohydrate()+"/"); 	
             	         System.out.print("food calories is "+food.get(counter).getFood_calories()+"/"); 	
             	         System.out.println("food fat is "+food.get(counter).getFood_fat()); 	
+            	         System.out.println("food cholesterol is "+food.get(counter).getFood_cholesterol()); 
+            	         System.out.println("food sodium is "+food.get(counter).getFood_sodium()); 
+            	         System.out.println("food fiber is "+food.get(counter).getFood_dietary_fiber()); 
+            	         System.out.println("food sugars is "+food.get(counter).getFood_sugars()); 
+            	         System.out.println("food Vitamin A is "+food.get(counter).getFood_vitamin_a()); 
+            	         System.out.println("food Vitamin C is "+food.get(counter).getFood_vitamin_c());
+            	         System.out.println("food calcium is "+food.get(counter).getFood_calcium()); 
+            	         System.out.println("food iron is "+food.get(counter).getFood_iron()); 
             	    }
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
@@ -354,10 +362,42 @@ public class FoodRecall extends JFrame{
             			     food_iter.setFood_servings(t_number_of_units.getText());
             				 food_iter.setMealType(mealType.getSelectedItem().toString());
             				 float quantity=Float.parseFloat(t_number_of_units.getText());
+            				 if(f.getFood_calories().equals("null"))
+            					 f.setFood_calories("0");
             				 food_iter.setFood_calories(Float.toString(quantity*Float.parseFloat(f.getFood_calories())));
+            				 if(f.getFood_protein().equals("null"))
+            					 f.setFood_protein("0");
             				 food_iter.setFood_protein(Float.toString(quantity*Float.parseFloat(f.getFood_protein())));
+            				 if(f.getFood_carbohydrate().equals("null"))
+            					 f.setFood_carbohydrate("0");
             				 food_iter.setFood_carbohydrate(Float.toString(quantity*Float.parseFloat(f.getFood_carbohydrate())));
+            				 if(f.getFood_fat().equals("null"))
+            					 f.setFood_fat("0");
             				 food_iter.setFood_fat(Float.toString(quantity*Float.parseFloat(f.getFood_fat())));
+            				 if(f.getFood_cholesterol().equals("null"))
+            					 f.setFood_cholesterol("0");
+            				 food_iter.setFood_cholesterol(Float.toString(quantity*Float.parseFloat(f.getFood_cholesterol())));
+            				 if(f.getFood_sodium().equals("null"))
+            					 f.setFood_sodium("0");
+            				 food_iter.setFood_sodium(Float.toString(quantity*Float.parseFloat(f.getFood_sodium())));
+            				 if(f.getFood_dietary_fiber().equals("null"))
+            					 f.setFood_dietary_fiber("0");
+            				 food_iter.setFood_dietary_fiber(Float.toString(quantity*Float.parseFloat(f.getFood_dietary_fiber())));
+            				 if(f.getFood_sugars().equals("null"))
+            					 f.setFood_sugars("0");
+            				 food_iter.setFood_sugars(Float.toString(quantity*Float.parseFloat(f.getFood_sugars())));
+            				 if(f.getFood_vitamin_a().equals("null"))
+            					 f.setFood_vitamin_a("0");
+            				 food_iter.setFood_vitamin_a(Float.toString(quantity*Float.parseFloat(f.getFood_vitamin_a())));
+            				 if(f.getFood_vitamin_c().equals("null"))
+            					 f.setFood_vitamin_c("0");
+            				 food_iter.setFood_vitamin_c(Float.toString(quantity*Float.parseFloat(f.getFood_vitamin_c())));
+            				 if(f.getFood_calcium().equals("null"))
+            					 f.setFood_calcium("0");
+            				 food_iter.setFood_calcium(Float.toString(quantity*Float.parseFloat(f.getFood_calcium())));
+            				 if(f.getFood_iron().equals("null"))
+            					 f.setFood_iron("0");
+            				 food_iter.setFood_iron(Float.toString(quantity*Float.parseFloat(f.getFood_iron())));
             				 model.addRow(food_iter);
             			 }
             		 }
