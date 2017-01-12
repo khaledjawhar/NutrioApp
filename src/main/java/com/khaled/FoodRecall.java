@@ -111,9 +111,9 @@ public class FoodRecall extends JFrame{
 		 l_filter_by_name=new JLabel("Filter By Name");
 		 l_number_of_units=new JLabel("Number of Units");
 		 l_food_type=new JLabel("Food Type");
-		 l_food_recall_date=new JLabel("Food Recall Date");
+		 l_food_recall_date=new JLabel("Food Recall Date dd/MM/yyyy");
 		 l_food_recall_number=new JLabel("Food Recall Number");
-		 l_visit_date=new JLabel("Visit Date");
+		 l_visit_date=new JLabel("Visit Date dd/MM/yyyy");
 		 l_mealType=new JLabel("Meal Type");
 		 t_filter_by_name=new JTextField();
 		 t_filter_by_name.addActionListener(handle);
@@ -154,15 +154,15 @@ public class FoodRecall extends JFrame{
 	     add(removeItemFromTable);
 	     l_food_recall_number.setBounds(380,20,120,20);
 		 add(l_food_recall_number);
-		 t_food_recall_number.setBounds(520,20,200,20);
+		 t_food_recall_number.setBounds(520,20,160,20);
 		 add(t_food_recall_number);
-		 l_food_recall_date.setBounds(740, 20,120 ,20 );
+		 l_food_recall_date.setBounds(740, 20,170 ,20 );
 		 add(l_food_recall_date);
-		 t_food_recall_date.setBounds(880, 20,200 ,20 );
+		 t_food_recall_date.setBounds(920, 20,120 ,20 );
 		 add(t_food_recall_date);
-		 l_visit_date.setBounds(1100, 20, 100, 20);
+		 l_visit_date.setBounds(1100, 20, 160, 20);
 		 add(l_visit_date);
-		 t_visit_date.setBounds(1200, 20, 150, 20);
+		 t_visit_date.setBounds(1230, 20, 120, 20);
 		 add(t_visit_date);
 		 saveItems.setBounds(800,530,200,20);
 		 add(saveItems);
@@ -223,6 +223,26 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==saveItems)
             {
             	 try {
+            		 if( combo.getSelectedIndex() == -1){
+            			 JOptionPane.showMessageDialog(null, "You must insert the name of the patient","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(t_food_recall_number.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the food recall number","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(t_food_recall_date.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the food recall date","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(t_visit_date.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the visit date","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
             		 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             		 java.sql.Date food_recallDate = new java.sql.Date(formatter.parse(t_food_recall_date.getText().toString()).getTime());
             		 java.sql.Date visit_date = new java.sql.Date(formatter.parse(t_visit_date.getText().toString()).getTime());
