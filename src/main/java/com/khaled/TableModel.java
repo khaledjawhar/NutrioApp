@@ -16,6 +16,10 @@ public class TableModel extends AbstractTableModel{
 	 public List<Food> getRowData() {
 		return rowData;
 	}
+	 public void deleteData() {
+		    rowData.clear();
+		    fireTableChanged(null);
+		  } 
 	public void setRowData(List<Food> list) {
 		this.rowData = list;
 	}

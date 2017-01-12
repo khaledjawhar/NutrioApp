@@ -8,9 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -220,12 +223,45 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==saveItems)
             {
             	 try {
-            		 for(int row = 0;row < model.getRowCount();row++) {
-            			     for(int col = 0;col < model.getColumnCount();col++) {
+            		 DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            		 java.sql.Date food_recallDate = new java.sql.Date(formatter.parse(t_food_recall_date.getText().toString()).getTime());
+            		 java.sql.Date visit_date = new java.sql.Date(formatter.parse(t_visit_date.getText().toString()).getTime());
+            		 DataBase db= new DataBase();    
+      	        	 con=db.connect(); 
+            		 for(int row = 0;row < model.getRowCount();row++) {    			     
             			    	 //insert items from the table into the database
-            			     }
+            			    	 preStatement = con.prepareStatement("insert into patient_foodrecall (patient_name,foodrecall_number,food_type,meal_serving,food_calories,food_protein,food_carbohydrate,food_fat,meal_type,visit_date,foodrecall_date,food_cholesterol,food_sodium,food_fiber,food_sugars,food_vitamin_a,food_vitamin_c,food_calcium,food_iron) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+            	     	         preStatement.setString(1, combo.getSelectedItem().toString()); //this replaces the 1st  "?" in the query for username
+            	     	       	 preStatement.setString(2, t_food_recall_number.getText());    //this replaces the 2st  "?" in the query for password
+            	     	         preStatement.setString(3, model.getValueAt(row, 1).toString());
+            	     	         preStatement.setString(4, model.getValueAt(row, 2).toString());
+            	     	         preStatement.setString(5, model.getValueAt(row, 3).toString());     	 
+            	     	         preStatement.setString(6, model.getValueAt(row, 4).toString()); 
+            	     	         preStatement.setString(7, model.getValueAt(row, 5).toString()); 
+            	     	         preStatement.setString(8, model.getValueAt(row, 6).toString()); 
+            	     	         preStatement.setString(9, model.getValueAt(row, 0).toString());
+            	     	         preStatement.setDate(10, food_recallDate);//visit date
+            	     	         preStatement.setDate(11, visit_date);//recall date
+            	     	         preStatement.setString(12, model.getValueAt(row, 7).toString());
+            	     	         preStatement.setString(13, model.getValueAt(row, 8).toString());
+            	     	         preStatement.setString(14, model.getValueAt(row, 9).toString());
+            	     	         preStatement.setString(15, model.getValueAt(row, 10).toString());
+            	     	         preStatement.setString(16, model.getValueAt(row, 11).toString());
+            	     	         preStatement.setString(17, model.getValueAt(row, 12).toString());
+            	     	         preStatement.setString(18, model.getValueAt(row, 13).toString());
+            	     	         preStatement.setString(19, model.getValueAt(row, 14).toString());
+            	     	         preStatement.executeUpdate();
             	     }
+            		 JOptionPane.showMessageDialog(null, "You have inserted nutrition facts info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
+            		 model.deleteData();
+            		 t_food_recall_date.setText("");
+            		 t_visit_date.setText("");
+            		 t_food_recall_number.setText("");
+       	             preStatement.close();
      	        } catch (Exception e) {
+     	        	 JOptionPane.showMessageDialog(null, "error in inserting nutrition facts info","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 
      			{  
