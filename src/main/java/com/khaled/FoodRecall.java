@@ -362,10 +362,50 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==loadItemsByPatientName)
             {
             	 try {
+            		 if( combo.getSelectedIndex() == -1){
+            			 JOptionPane.showMessageDialog(null, "You must insert the name of the patient in order to load the items","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(t_food_recall_number.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the food recall number in order to load the items","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 DataBase db= new DataBase();    
+         			 con=db.connect(); 
+         			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_foodrecall where patient_name=? and foodrecall_number=?");
+         			 preStatement.setString(1,combo.getSelectedItem().toString());
+         			 preStatement.setString(2,t_food_recall_number.getText().toString());
+         			 rs=preStatement.executeQuery();
+         	         while(rs.next())
+         	         {
+         	        	t_food_recall_date.setText(rs.getDate("foodrecall_date").toString());
+         	        	t_visit_date.setText(rs.getDate("visit_date").toString());
+         	        	Food food_iter=new Food();
+         	        	food_iter.setFood_servings(rs.getString("meal_serving"));
+         	        	food_iter.setFood_type(rs.getString("food_type"));
+         	        	food_iter.setMealType(rs.getString("meal_type"));
+         	        	food_iter.setFood_calories(rs.getString("food_calories"));
+         	        	food_iter.setFood_protein(rs.getString("food_protein"));
+         	        	food_iter.setFood_carbohydrate(rs.getString("food_carbohydrate"));
+         	        	food_iter.setFood_fat(rs.getString("food_fat"));
+         	        	food_iter.setFood_cholesterol(rs.getString("food_cholesterol"));
+         	        	food_iter.setFood_sodium(rs.getString("food_sodium"));
+         	        	food_iter.setFood_dietary_fiber(rs.getString("food_fiber"));
+         	        	food_iter.setFood_sugars(rs.getString("food_sugars"));
+         	        	food_iter.setFood_vitamin_a(rs.getString("food_vitamin_a"));
+         	        	food_iter.setFood_vitamin_c(rs.getString("food_vitamin_c"));
+         	        	food_iter.setFood_calcium(rs.getString("food_calcium"));
+         	        	food_iter.setFood_iron(rs.getString("food_iron"));
+         	        	model.addRow(food_iter);
+         	         }
 
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
-     	           
+     	        	 JOptionPane.showMessageDialog(null, "error in pulling food recall info for patient","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
+     	          
      	        }
      	        finally 
      			{  
