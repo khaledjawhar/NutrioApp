@@ -7,6 +7,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -49,7 +52,7 @@ public class FoodRecall extends JFrame{
 	ArrayList<String> defaultValues;
 	JLabel l_patient_name,l_filter_by_name,l_food_type,l_number_of_units,l_food_recall_date,l_food_recall_number,l_visit_date,l_mealType;
 	JTextField t_filter_by_name,t_number_of_units,t_food_recall_date,t_food_recall_number,t_visit_date;
-	JButton addItemToTable,removeItemFromTable,searchItem,saveItems,loadItemsByPatientName,generateReport;
+	JButton addItemToTable,removeItemFromTable,searchItem,saveItems,loadItemsByPatientName,deleteItemsLoadedByPatientName,generateReport;
 	JList foodList;
 	DefaultListModel listModel;
 	TableModel model;
@@ -105,6 +108,8 @@ public class FoodRecall extends JFrame{
 	     saveItems.addActionListener(handle);
 	     loadItemsByPatientName=new JButton("Load Items by patient name");
 	     loadItemsByPatientName.addActionListener(handle);
+	     deleteItemsLoadedByPatientName=new JButton("Delete Items loaded by patient");
+	     deleteItemsLoadedByPatientName.addActionListener(handle);
 	     generateReport=new JButton("Generate Report");
 	     generateReport.addActionListener(handle);
 		 l_patient_name=new JLabel("Patient Name");
@@ -170,6 +175,8 @@ public class FoodRecall extends JFrame{
 		 add(saveItems);
 		 loadItemsByPatientName.setBounds(820,530,200,20);
 		 add(loadItemsByPatientName);
+		 deleteItemsLoadedByPatientName.setBounds(820,560,230,20);
+		 add(deleteItemsLoadedByPatientName);
 		 generateReport.setBounds(1040,530,200,20);
 		 add(generateReport);
 		 scrollPane.setBounds(340,40,1000,450);
@@ -282,6 +289,7 @@ public class FoodRecall extends JFrame{
      	        } catch (Exception e) {
      	        	 JOptionPane.showMessageDialog(null, "error in inserting nutrition facts info","Failed!!",
                              JOptionPane.ERROR_MESSAGE);
+     	        	 System.out.println(e);
      	        }
      	        finally 
      			{  
@@ -341,9 +349,90 @@ public class FoodRecall extends JFrame{
             if(ae.getSource()==generateReport)
             {
             	 try {
+            		 String tempDir=System.getProperty("java.io.tmpdir");
+            		 File file=new File(tempDir,"foodRecallReport.txt");
+            		 Food foodTotal=new Food();
+            		 BufferedWriter bfw = new BufferedWriter(new FileWriter(file));
+            		 bfw.write("Patient Name:"+combo.getSelectedItem().toString());
+            		 bfw.newLine();
+            		 bfw.write("Food Recall Date: "+t_food_recall_date.getText().toString());
+            		 bfw.newLine();
+            		 bfw.write("Visit Date: "+t_visit_date.getText().toString());
+            		 bfw.newLine();
+            		 bfw.write("Food Recall Number :"+t_food_recall_number.getText());
+            		 bfw.newLine();   
+            		 bfw.newLine();  
+            		 for (int i = 0; i < model.getColumnCount(); i++) {//first loop is used for titles of each column
+
+                         String name = String.valueOf(model.getColumnName(i));
+
+                         if (name.length() > 20) {//20 (characters long) is the constant I chose to make each value
+                             name = name.substring(0, 20);
+                         } else if (name.length() == 20) {
+
+                         } else {
+                             String spaces = "";
+                             int diff = 20 - name.length();
+                             while (diff > 0) {
+                                 spaces = spaces + " ";
+                                 diff--;
+                             }
+                             name = name.concat(spaces);
+                         }
+
+                         bfw.write(name);
+                         bfw.write("\t");
+                     }
+            		 bfw.newLine();
+            		 bfw.write("____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________");
+            		 bfw.newLine();
+            		 for (int i = 0; i < model.getRowCount(); i++) {//for all the data in the Jtable excluding column headers
+                         bfw.newLine();
+                         for (int j = 0; j < model.getColumnCount(); j++) {
+
+                             if (model.getValueAt(i, j) == null) {
+                                 bfw.write("                    ");
+                                 bfw.write("\t");
+                             }
+
+                             else {
+
+                                 String name = String.valueOf((model
+                                         .getValueAt(i, j)));
+
+                                 if (name.contains("(")) {
+                                     name = name.substring(0, name.indexOf("("));
+                                 }
+
+                                 if (name.length() > 20) {
+                                     name = name.substring(0, 20);
+                                 } else if (name.length() == 20) {
+
+                                 } else {
+                                     String spaces = "";
+                                     int diff = 20 - name.length();
+                                     while (diff > 0) {
+                                         spaces = spaces + " ";
+                                         diff--;
+                                     }
+                                     name = name.concat(spaces);
+                                 }
+
+                                 bfw.write(name);
+                                 bfw.write("\t");
+                             }
+                         }
+                     }
+            		 bfw.flush();
+            		 bfw.close();
+            		 JOptionPane.showMessageDialog(null, "file created successfully under"+file.getAbsolutePath(),"Success",
+                             JOptionPane.INFORMATION_MESSAGE);
             	
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
+     	        	 JOptionPane.showMessageDialog(null, "error in writing to the file","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
+     	        	 System.out.println(e);
      	           
      	        }
      	        finally 
@@ -400,6 +489,7 @@ public class FoodRecall extends JFrame{
          	        	food_iter.setFood_iron(rs.getString("food_iron"));
          	        	model.addRow(food_iter);
          	         }
+         	        preStatement.close();
 
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
@@ -429,6 +519,41 @@ public class FoodRecall extends JFrame{
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
      	           
+     	        }
+     	        finally 
+     			{  
+     			   if( con != null )
+     					try {
+     						con.close();
+     					} catch (SQLException e) {
+     						// TODO Auto-generated catch block
+     						e.printStackTrace();
+     					}  
+     			}
+            }//if
+            
+          //checks if the button clicked
+            if(ae.getSource()==deleteItemsLoadedByPatientName)
+            {
+            	 try {
+            		 DataBase db= new DataBase();    
+        			 con=db.connect(); 
+        			 preStatement = con.prepareStatement("DELETE FROM nutriodb.patient_foodrecall where patient_name=? and foodrecall_number=?");
+        			 preStatement.setString(1,combo.getSelectedItem().toString());
+        			 preStatement.setString(2,t_food_recall_number.getText());
+        			 preStatement.executeUpdate();
+        			 JOptionPane.showMessageDialog(null, "You have deleted food recall info sucessfully","Success",
+                             JOptionPane.INFORMATION_MESSAGE);
+        			 model.deleteData();
+            		 t_food_recall_date.setText("");
+            		 t_visit_date.setText("");
+            		 t_food_recall_number.setText("");
+            		 preStatement.close();
+            		   
+     	        } catch (Exception e) {
+     	            // TODO Auto-generated catch block
+     	        	 JOptionPane.showMessageDialog(null, "error in deleting food recall info","Failed!!",
+                             JOptionPane.ERROR_MESSAGE);
      	        }
      	        finally 
      			{  

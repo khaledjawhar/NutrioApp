@@ -74,7 +74,9 @@ public class Login extends JFrame
                     //a pop-up box
                     JOptionPane.showMessageDialog(null, "You have logged in successfully","Success",
                                         JOptionPane.INFORMATION_MESSAGE);
-                    Patient patient=new Patient();              
+                    Patient patient=new Patient();  
+                    setVisible(false); 
+                    dispose(); 
                 }
                 else
                 {

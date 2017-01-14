@@ -13,6 +13,11 @@ public class TableModel extends AbstractTableModel{
 	 {
 	 this.rowData = data;
 	 }
+	 
+	 public boolean isCellEditable(int row,int cols)
+	 {
+		 return true;
+	 }
 	 public List<Food> getRowData() {
 		return rowData;
 	}
