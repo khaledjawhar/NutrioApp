@@ -84,6 +84,7 @@ public class AddVisitInfo  extends JFrame{
 	     add(scrollPaneVisitNote);
 	     insert.setBounds(400, 25, 150, 20);
 	     add(insert);
+	     setTitle("Nutrio App");
 	     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		 setVisible(true);

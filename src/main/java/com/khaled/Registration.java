@@ -29,7 +29,7 @@ import javax.swing.table.DefaultTableModel;
 public class Registration  extends JFrame{
 	 Connection con;
 	 PreparedStatement preStatement;
-     JLabel title, idLabel,passwordLabel, nameLabel,emailAddressLabel, contactLabel;
+     JLabel title,passwordLabel, nameLabel,emailAddressLabel, contactLabel;
      JTextField idField,passwordField, userNameField,addressField, contactField;
      JButton registerButton;
      
@@ -42,35 +42,29 @@ public class Registration  extends JFrame{
            // Defining Labels 
            title = new JLabel("Registration Form");
            title.setBounds(60, 7, 200, 30);
-           passwordLabel = new JLabel("Password");
-           passwordLabel.setBounds(30, 50, 60, 30);
            nameLabel = new JLabel("UserName"); 
-           nameLabel.setBounds(30, 85, 60, 30);
-           // Defining ID field
-           idField = new JTextField(); 
-           idField.setBounds(95, 50, 130, 30);
-           idField.setEnabled(false);
+           nameLabel.setBounds(30, 50, 90, 30);
+           passwordLabel = new JLabel("Password");
+           passwordLabel.setBounds(30, 85, 90, 30);
            emailAddressLabel = new JLabel("email Address"); 
            emailAddressLabel.setBounds(30, 155, 90, 30); 
            contactLabel = new JLabel("Contact"); 
-           contactLabel.setBounds(30, 190, 60, 30);
-           //define password field
-           passwordField = new JPasswordField(); 
-           passwordField.setBounds(95, 50, 130, 30);
-
+           contactLabel.setBounds(30, 190, 90, 30);
            // Defining Name field
            userNameField = new JTextField(); 
-           userNameField.setBounds(95, 85, 130, 30);         
+           userNameField.setBounds(125, 50, 130, 30);   
+           //define password field
+           passwordField = new JPasswordField(); 
+           passwordField.setBounds(125, 85, 130, 30);
            addressField = new JTextField(); 
            addressField.setBounds(125, 155, 130, 30);
            contactField = new JTextField(); 
-           contactField.setBounds(95, 190, 130, 30);
+           contactField.setBounds(125, 190, 130, 30);
 
            // fixing all Label,TextField,RadioButton
            add(title);
            add(passwordLabel);
            add(nameLabel);
-           add(idField);
            add(emailAddressLabel);
            add(contactLabel);
            add(passwordField);
@@ -87,6 +81,7 @@ public class Registration  extends JFrame{
            Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
            this.setLocation(dim.width/2-this.getSize().width/2,
                             dim.height/2-this.getSize().height/2);
+           setTitle("Nutrio App");
            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
            setResizable(false);
            setVisible(true);
@@ -97,13 +92,13 @@ public class Registration  extends JFrame{
 				try{
                     if (ae.getSource() == registerButton) {
                         if (userNameField.getText().equals(""))
-                           JOptionPane.showMessageDialog(idField, "Please provide Name_Field");
+                           JOptionPane.showMessageDialog(null, "Please provide Name_Field");
                         else if(addressField.getText().equals(""))
-                           JOptionPane.showMessageDialog(idField, "Please provide Address_Field");
+                           JOptionPane.showMessageDialog(null, "Please provide Address_Field");
                         else if(contactField.getText().equals(""))
-                           JOptionPane.showMessageDialog(idField, "Please provide Contact_Field");
+                           JOptionPane.showMessageDialog(null, "Please provide Contact_Field");
                         else if(passwordField.getText().equals(""))
-                            JOptionPane.showMessageDialog(idField, "Please provide Password_Field");
+                            JOptionPane.showMessageDialog(null, "Please provide Password_Field");
                         else {
                          MessageDigest digest = MessageDigest.getInstance("SHA-1");	
                          preStatement = con.prepareStatement("insert into registration (name,address,contact,password) values (?,?,?,?)");	

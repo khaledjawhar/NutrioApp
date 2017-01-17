@@ -123,8 +123,8 @@ public class FoodRecall extends JFrame{
 		 t_filter_by_name=new JTextField();
 		 t_filter_by_name.addActionListener(handle);
 		 t_number_of_units=new JTextField();
-		 t_food_recall_date=new JTextField();;
-		 t_food_recall_number=new JTextField();;
+		 t_food_recall_date=new JTextField();
+		 t_food_recall_number=new JTextField();
 		 t_visit_date=new JTextField();;
 		 mealType=new JComboBox();
 		 mealType.addItem("BreakFast");
@@ -135,19 +135,19 @@ public class FoodRecall extends JFrame{
 		 combo = new AutocompleteJComboBox(searchable);
 		 l_patient_name.setBounds(20, 20, 100, 20);
 	     add(l_patient_name);
-	     combo.setBounds(124, 20, 200, 20);
+	     combo.setBounds(124, 20, 210, 20);
 	     add(combo);
-	     searchItem.setBounds(20, 45, 120, 20);
+	     searchItem.setBounds(20, 55, 110, 20);
 	     add(searchItem);
-	     t_filter_by_name.setBounds(145, 45, 175, 20);
+	     t_filter_by_name.setBounds(145, 55, 175, 30);
 	     add(t_filter_by_name);
-	     l_food_type.setBounds(20, 70, 100, 20);
+	     l_food_type.setBounds(20, 90, 110, 20);
 	     add(l_food_type);
-	     pane.setBounds(124, 70, 200, 400);
+	     pane.setBounds(124, 90, 200, 400);
 	     add(pane);
 	     l_number_of_units.setBounds(20, 500, 100, 20);
 	     add(l_number_of_units);
-	     t_number_of_units.setBounds(124,500,200,20);
+	     t_number_of_units.setBounds(124,500,200,30);
 	     add(t_number_of_units);
 	     l_mealType.setBounds(20, 530, 100, 20);
 	     add(l_mealType);
@@ -159,15 +159,15 @@ public class FoodRecall extends JFrame{
 	     add(removeItemFromTable);
 	     l_food_recall_number.setBounds(380,20,120,20);
 		 add(l_food_recall_number);
-		 t_food_recall_number.setBounds(520,20,160,20);
+		 t_food_recall_number.setBounds(520,20,160,30);
 		 add(t_food_recall_number);
 		 l_food_recall_date.setBounds(740, 20,170 ,20 );
 		 add(l_food_recall_date);
-		 t_food_recall_date.setBounds(920, 20,120 ,20 );
+		 t_food_recall_date.setBounds(920, 20,120 ,30 );
 		 add(t_food_recall_date);
 		 l_visit_date.setBounds(1100, 20, 160, 20);
 		 add(l_visit_date);
-		 t_visit_date.setBounds(1230, 20, 120, 20);
+		 t_visit_date.setBounds(1230, 20, 120, 30);
 		 add(t_visit_date);
 		 saveItems.setBounds(800,530,200,20);
 		 add(saveItems);
@@ -179,8 +179,9 @@ public class FoodRecall extends JFrame{
 		 add(deleteItemsLoadedByPatientName);
 		 generateReport.setBounds(1040,530,200,20);
 		 add(generateReport);
-		 scrollPane.setBounds(340,40,1000,450);
+		 scrollPane.setBounds(340,50,1000,450);
 		 add(scrollPane);
+		 setTitle("Nutrio App");
 		 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		 setJMenuBar(new PatientMenu());
@@ -258,8 +259,8 @@ public class FoodRecall extends JFrame{
             		 for(int row = 0;row < model.getRowCount();row++) {    			     
             			    	 //insert items from the table into the database
             			    	 preStatement = con.prepareStatement("insert into patient_foodrecall (patient_name,foodrecall_number,food_type,meal_serving,food_calories,food_protein,food_carbohydrate,food_fat,meal_type,visit_date,foodrecall_date,food_cholesterol,food_sodium,food_fiber,food_sugars,food_vitamin_a,food_vitamin_c,food_calcium,food_iron) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-            	     	         preStatement.setString(1, combo.getSelectedItem().toString()); //this replaces the 1st  "?" in the query for username
-            	     	       	 preStatement.setString(2, t_food_recall_number.getText());    //this replaces the 2st  "?" in the query for password
+            	     	         preStatement.setString(1, combo.getSelectedItem().toString()); 
+            	     	       	 preStatement.setString(2, t_food_recall_number.getText());    
             	     	         preStatement.setString(3, model.getValueAt(row, 1).toString());
             	     	         preStatement.setString(4, model.getValueAt(row, 2).toString());
             	     	         preStatement.setString(5, model.getValueAt(row, 3).toString());     	 
@@ -314,6 +315,7 @@ public class FoodRecall extends JFrame{
             		for (int counter = 0; counter < food.size(); counter++) {
             			 listModel.addElement(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
             			 defaultValues.add(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
+            			 /*
             			 System.out.print("food name is "+food.get(counter).getFood_type()+"/"); 
             	         System.out.print("food brand is "+food.get(counter).getFood_brand()+"/"); 		
             	         System.out.print("food protein is "+food.get(counter).getFood_protein()+"/"); 	
@@ -327,7 +329,8 @@ public class FoodRecall extends JFrame{
             	         System.out.println("food Vitamin A is "+food.get(counter).getFood_vitamin_a()); 
             	         System.out.println("food Vitamin C is "+food.get(counter).getFood_vitamin_c());
             	         System.out.println("food calcium is "+food.get(counter).getFood_calcium()); 
-            	         System.out.println("food iron is "+food.get(counter).getFood_iron()); 
+            	         System.out.println("food iron is "+food.get(counter).getFood_iron());
+            	         */ 
             	    }
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
@@ -348,6 +351,8 @@ public class FoodRecall extends JFrame{
           //checks if the button clicked
             if(ae.getSource()==generateReport)
             {
+            	ArrayList<Float> total=new ArrayList<Float>();
+            	int flag=0;
             	 try {
             		 String tempDir=System.getProperty("java.io.tmpdir");
             		 File file=new File(tempDir,"foodRecallReport.txt");
@@ -389,7 +394,20 @@ public class FoodRecall extends JFrame{
             		 for (int i = 0; i < model.getRowCount(); i++) {//for all the data in the Jtable excluding column headers
                          bfw.newLine();
                          for (int j = 0; j < model.getColumnCount(); j++) {
-
+                        	 if(j>=3){
+                        		 if(flag==0)
+                        		 {
+                        			 total.add(j-3,Float.parseFloat((String) model.getValueAt(i, j)));
+                        			 if(j== model.getColumnCount()-1)
+                        				 flag=1;
+                        		 }
+                        		 else
+                        		 {
+                        			 float oldValue = total.get(j-3);
+                    			     float newValue=oldValue+Float.parseFloat((String) model.getValueAt(i, j));
+                    			     total.set(j-3, newValue);
+                        		 }
+                        	 }
                              if (model.getValueAt(i, j) == null) {
                                  bfw.write("                    ");
                                  bfw.write("\t");
@@ -423,6 +441,35 @@ public class FoodRecall extends JFrame{
                              }
                          }
                      }
+            		 bfw.newLine();
+            		 String name="";
+            		 for (int j = 0; j < model.getColumnCount(); j++){
+            			     if(j==0||j==1||j==2){
+            			    	 if(j==0)
+            			    		 name="Total";
+            			         else
+            			        	 name="";
+            			     }
+            			     else{
+            			    	 name=Float.toString(total.get(j-3));
+            			     }
+                             if (name.length() > 20) {
+                                 name = name.substring(0, 20);
+                             } else if (name.length() == 20) {
+
+                             } else {
+                                 String spaces = "";
+                                 int diff = 20 - name.length();
+                                 while (diff > 0) {
+                                     spaces = spaces + " ";
+                                     diff--;
+                                 }
+                                 name = name.concat(spaces);
+                             }
+
+                             bfw.write(name);
+                             bfw.write("\t");            			 
+            		 }
             		 bfw.flush();
             		 bfw.close();
             		 JOptionPane.showMessageDialog(null, "file created successfully under"+file.getAbsolutePath(),"Success",
@@ -575,16 +622,19 @@ public class FoodRecall extends JFrame{
             		 for (Food f : food) {
             			 if(selected.equals(f.getFood_type()+",brand: "+f.getFood_brand())){
             				 //add the food recall to the table
-            				 Food food_iter=f;
+            				 Food food_iter=new Food();
+            				 food_iter.setFood_type(f.getFood_type()+",brand: "+f.getFood_brand());
+            				 food_iter.setFood_brand(f.getFood_brand());
             				 if(t_number_of_units.getText().equals(""))
             				 {
             					 t_number_of_units.setText("1");
-            				 }         				 
+            				 }   
             			     food_iter.setFood_servings(t_number_of_units.getText());
             				 food_iter.setMealType(mealType.getSelectedItem().toString());
             				 float quantity=Float.parseFloat(t_number_of_units.getText());
             				 if(f.getFood_calories().equals("null"))
             					 f.setFood_calories("0");
+            				 System.out.println("calories is"+f.getFood_calories());
             				 food_iter.setFood_calories(Float.toString(quantity*Float.parseFloat(f.getFood_calories())));
             				 if(f.getFood_protein().equals("null"))
             					 f.setFood_protein("0");

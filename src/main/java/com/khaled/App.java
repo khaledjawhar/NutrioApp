@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 /**
  * Hello world!
@@ -15,10 +16,17 @@ public class App
 {
     public static void main( String[] args )
     {
-        
+    	try 
+        { 
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"); 
+        } 
+        catch(Exception e){ 
+        }
+
     	JButton registerButton;
     	JButton loginButton;
     	JFrame frame= new JFrame();
+    	frame. setTitle("Nutrio App");
     	frame.setSize(770, 420);
         frame.setLayout(new FlowLayout());
         registerButton = new JButton("Signup");

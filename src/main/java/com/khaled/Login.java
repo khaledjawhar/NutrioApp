@@ -24,7 +24,6 @@ public class Login extends JFrame
     Login()
     {
         super("Login form");
- 
         c=getContentPane();
         c.setLayout(new FlowLayout());
  
@@ -42,13 +41,14 @@ public class Login extends JFrame
         //adding actionlistener to the button
         button.addActionListener(handle);
  
-        //add to contaienr
+        //add to container
         c.add(l_name);
         c.add(t_name);
         c.add(l_pass);
         c.add(t_pass);
         c.add(button);
         //visual
+        setTitle("Nutrio App");
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(770, 420);

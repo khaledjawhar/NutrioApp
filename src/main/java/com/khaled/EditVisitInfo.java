@@ -92,6 +92,7 @@ public class EditVisitInfo  extends JFrame{
 	     add(delete);
 	     update.setBounds(800, 25, 150, 20);
 	     add(update);
+	     setTitle("Nutrio App");
 	     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		 setVisible(true);

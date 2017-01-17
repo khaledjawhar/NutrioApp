@@ -103,6 +103,7 @@ public class AddPatient extends JFrame{
 	     add(scrollPaneSupplements);
 	     insert.setBounds(400, 25, 100, 20);
 	     add(insert);
+	     setTitle("Nutrio App");
 	     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		 setVisible(true);
