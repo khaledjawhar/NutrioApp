@@ -74,17 +74,17 @@ public class EditVisitInfo  extends JFrame{
 		 setLayout(null);
 		 searchable = new StringSearchable(myWords);
 		 combo = new AutocompleteJComboBox(searchable);
-		 l_name.setBounds(20, 20, 100, 20);
+		 l_name.setBounds(20, 25, 100, 20);
 	     add(l_name);
-	     combo.setBounds(124, 25, 200, 20);
+	     combo.setBounds(124, 25, 200, 30);
 	     add(combo);
-	     l_number.setBounds(20, 40, 100, 20);
+	     l_number.setBounds(20, 65, 100, 20);
 	     add(l_number);
-	     t_number.setBounds(124, 45, 200, 20);
+	     t_number.setBounds(124, 65, 200, 30);
 	     add(t_number);
-	     l_note.setBounds(20, 60, 100, 20);
+	     l_note.setBounds(20, 95, 100, 20);
 	     add(l_note);
-	     scrollPaneVisitNote.setBounds(124, 65, 600, 200);
+	     scrollPaneVisitNote.setBounds(124, 95, 600, 200);
 	     add(scrollPaneVisitNote);
 	     view.setBounds(400, 25, 150, 20);
 	     add(view);
@@ -113,12 +113,12 @@ public class EditVisitInfo  extends JFrame{
             	 try {
             		 DataBase db= new DataBase();    
          			 con=db.connect(); 
-         			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_visit where patient_name=?");
+         			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_visit where patient_name=? and visit_number=?");
          			 preStatement.setString(1,combo.getSelectedItem().toString());
+         			 preStatement.setString(2,t_number.getText().toString());
          			 rs=preStatement.executeQuery();
          	         if(rs.next())
          	         {
-         	        	t_number.setText(rs.getString("visit_number"));
          	        	visitNote.setText(rs.getString("visit_note"));
          	         }
             		
