@@ -2,6 +2,16 @@ package com.khaled;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.net.URISyntaxException;
+import java.security.CodeSource;
+import java.util.Properties;
+import java.util.Scanner;
+
 import javax.swing.*;
 
 public class PatientMenu extends JMenuBar {
@@ -44,8 +54,38 @@ public class PatientMenu extends JMenuBar {
           };
            ActionListener backupListener = new ActionListener(  ) {
                public void actionPerformed(ActionEvent event) {
-               	
-               }
+            	   try{
+            		       Properties prop = new Properties();
+            			   InputStream input = null;
+	            		   int processComplete; // to verify that either process completed or not
+	            		   String tempDir=System.getProperty("java.io.tmpdir");
+	            		   input = new FileInputStream("src/main/resources/config.properties");
+	            		   prop.load(input);
+	            		   String dbUser=prop.getProperty("dbUser");
+	            	       String dbPassword=prop.getProperty("dbPassword");
+	            		   String dbName=prop.getProperty("dbName");
+	            		   String path=tempDir+"backup.sql";
+	            		   //C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\
+	            		   String executeCmd = "";
+	            		   executeCmd = "mysqldump -u" +dbUser+ " -p" +dbPassword+ " --add-drop-database -B " +dbName+ " -r backup.sql";
+	            		   Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
+	            		   // call the mysqldump in terminal and execute it
+	            		   processComplete = runtimeProcess.waitFor();//store the state in variable
+	            		   if(processComplete==1){//if values equal 1 process failed
+	            			   JOptionPane.showMessageDialog(null, "Backup Failed");//display message
+	            		   }
+	            		   else if(processComplete==0){//if values equal 0 process failed
+	            			   JOptionPane.showMessageDialog(null,"\n Backup created Successfully..\n Check the Backup File in same directory of the app");
+	            		   //display message
+	            		   }
+	
+	            		   }catch(Exception e){
+	            			   JOptionPane.showMessageDialog(null,e);//exeception handling
+	
+	            		   }
+
+            	}
+               
             };
             
             ActionListener restoreListener = new ActionListener(  ) {

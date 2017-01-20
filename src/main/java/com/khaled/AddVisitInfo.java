@@ -59,6 +59,8 @@ public class AddVisitInfo  extends JFrame{
 						}  
 				}
 	     handle =new handler();
+	     BasePanel panel=new BasePanel("src/main/resources/patient Records.jpg");
+	     panel.setLayout(null);
 	     visitNote = new JTextArea();
 		 scrollPaneVisitNote = new JScrollPane(visitNote); 
 		 insert=new JButton("Insert Visit Info");
@@ -67,23 +69,23 @@ public class AddVisitInfo  extends JFrame{
 		 l_number=new JLabel("Visit Number");
 		 l_note=new JLabel("Visit Note");
 		 t_number=new JTextField();
-		 setLayout(null);
 		 searchable = new StringSearchable(myWords);
 		 combo = new AutocompleteJComboBox(searchable);
-		 l_name.setBounds(20, 20, 100, 20);
-	     add(l_name);
-	     combo.setBounds(124, 25, 200, 20);
-	     add(combo);
-	     l_number.setBounds(20, 40, 100, 20);
-	     add(l_number);
-	     t_number.setBounds(124, 45, 200, 20);
-	     add(t_number);
-	     l_note.setBounds(20, 60, 100, 20);
-	     add(l_note);
-	     scrollPaneVisitNote.setBounds(124, 65, 600, 200);
-	     add(scrollPaneVisitNote);
+		 l_name.setBounds(20, 25, 100, 25);
+		 panel.add(l_name);
+	     combo.setBounds(124, 25, 200, 25);
+	     panel.add(combo);
+	     l_number.setBounds(20, 60, 100, 25);
+	     panel.add(l_number);
+	     t_number.setBounds(124, 60, 200, 30);
+	     panel.add(t_number);
+	     l_note.setBounds(20, 90, 100, 25);
+	     panel.add(l_note);
+	     scrollPaneVisitNote.setBounds(124, 90, 600, 200);
+	     panel.add(scrollPaneVisitNote);
 	     insert.setBounds(400, 25, 150, 20);
-	     add(insert);
+	     panel.add(insert);
+	     add(panel);
 	     setTitle("Nutrio App");
 	     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 

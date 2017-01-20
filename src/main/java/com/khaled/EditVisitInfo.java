@@ -59,6 +59,8 @@ public class EditVisitInfo  extends JFrame{
 						}  
 				}
 	     handle =new handler();
+	     BasePanel panel=new BasePanel("src/main/resources/patient Records.jpg");
+	     panel.setLayout(null);
 	     visitNote = new JTextArea();
 		 scrollPaneVisitNote = new JScrollPane(visitNote); 
 		 view=new JButton("View Visit Info");
@@ -71,27 +73,27 @@ public class EditVisitInfo  extends JFrame{
 		 l_number=new JLabel("Visit Number");
 		 l_note=new JLabel("Visit Note");
 		 t_number=new JTextField();
-		 setLayout(null);
 		 searchable = new StringSearchable(myWords);
 		 combo = new AutocompleteJComboBox(searchable);
 		 l_name.setBounds(20, 25, 100, 20);
-	     add(l_name);
+	     panel.add(l_name);
 	     combo.setBounds(124, 25, 200, 30);
-	     add(combo);
+	     panel.add(combo);
 	     l_number.setBounds(20, 65, 100, 20);
-	     add(l_number);
+	     panel.add(l_number);
 	     t_number.setBounds(124, 65, 200, 30);
-	     add(t_number);
+	     panel.add(t_number);
 	     l_note.setBounds(20, 95, 100, 20);
-	     add(l_note);
+	     panel.add(l_note);
 	     scrollPaneVisitNote.setBounds(124, 95, 600, 200);
-	     add(scrollPaneVisitNote);
+	     panel.add(scrollPaneVisitNote);
 	     view.setBounds(400, 25, 150, 20);
-	     add(view);
+	     panel.add(view);
 	     delete.setBounds(600, 25, 150, 20);
-	     add(delete);
+	     panel.add(delete);
 	     update.setBounds(800, 25, 150, 20);
-	     add(update);
+	     panel.add(update);
+	     add(panel);
 	     setTitle("Nutrio App");
 	     setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
