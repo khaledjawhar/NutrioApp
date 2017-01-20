@@ -1,5 +1,6 @@
 package com.khaled;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Label;
@@ -182,6 +183,7 @@ public class FoodRecall extends JFrame{
 		 scrollPane.setBounds(340,50,1000,450);
 		 add(scrollPane);
 		 setTitle("Nutrio App");
+		 getContentPane().setBackground( Color.GRAY );
 		 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	     setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		 setJMenuBar(new PatientMenu());

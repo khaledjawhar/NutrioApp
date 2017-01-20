@@ -1,12 +1,18 @@
 package com.khaled;
 
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
+
 
 /**
  * Hello world!
@@ -26,17 +32,18 @@ public class App
     	JButton registerButton;
     	JButton loginButton;
     	JFrame frame= new JFrame();
+    	BasePanel panel=new BasePanel("src/main/resources/nutrioAppImage.jpg");
     	frame. setTitle("Nutrio App");
-    	frame.setSize(770, 420);
-        frame.setLayout(new FlowLayout());
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         registerButton = new JButton("Signup");
         registerButton.setBounds(110, 250, 100, 25);
         // fixing all Buttons
-        frame.add(registerButton);
+        panel.add(registerButton);
         loginButton = new JButton("login");
         loginButton.setBounds(110, 250, 100, 25);
         // fixing all Buttons
-        frame.add(loginButton);
+        panel.add(loginButton);
+        frame.add(panel);
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         registerButton.addActionListener(new ActionListener() {
@@ -50,5 +57,7 @@ public class App
 			}
         });
 	}
+    
+    
 }
 

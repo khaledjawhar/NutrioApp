@@ -13,7 +13,6 @@ public class Login extends JFrame
     JTextField t_name;
     JPasswordField t_pass;     //A special JTextField but hides input text
     JButton button;
-    Container c;
  
     //a inner class to handling ActionEvents
     handler handle;
@@ -24,9 +23,7 @@ public class Login extends JFrame
     Login()
     {
         super("Login form");
-        c=getContentPane();
-        c.setLayout(new FlowLayout());
- 
+    	BasePanel panel=new BasePanel("src/main/resources/login image.jpg");
         //extra classes
         handler=new LoginHandler();
         handle =new handler();
@@ -42,16 +39,17 @@ public class Login extends JFrame
         button.addActionListener(handle);
  
         //add to container
-        c.add(l_name);
-        c.add(t_name);
-        c.add(l_pass);
-        c.add(t_pass);
-        c.add(button);
+        panel.add(l_name);
+        panel.add(t_name);
+        panel.add(l_pass);
+        panel.add(t_pass);
+        panel.add(button);
+        add(panel);
         //visual
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setTitle("Nutrio App");
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(770, 420);
  
     }
    

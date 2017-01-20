@@ -1,5 +1,6 @@
 package com.khaled;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -29,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
 public class Registration  extends JFrame{
 	 Connection con;
 	 PreparedStatement preStatement;
-     JLabel title,passwordLabel, nameLabel,emailAddressLabel, contactLabel;
+     JLabel passwordLabel, nameLabel,emailAddressLabel, contactLabel;
      JTextField idField,passwordField, userNameField,addressField, contactField;
      JButton registerButton;
      
@@ -37,11 +38,7 @@ public class Registration  extends JFrame{
      public Registration() {
           // TODO Auto-generated constructor stub
           super("REGISTRATION FORM");
-           setSize(770, 420);
-           setLayout(null);
            // Defining Labels 
-           title = new JLabel("Registration Form");
-           title.setBounds(60, 7, 200, 30);
            nameLabel = new JLabel("UserName"); 
            nameLabel.setBounds(30, 50, 90, 30);
            passwordLabel = new JLabel("Password");
@@ -60,30 +57,26 @@ public class Registration  extends JFrame{
            addressField.setBounds(125, 155, 130, 30);
            contactField = new JTextField(); 
            contactField.setBounds(125, 190, 130, 30);
-
+           BasePanel panel=new BasePanel("src/main/resources/registration image.jpg");
            // fixing all Label,TextField,RadioButton
-           add(title);
-           add(passwordLabel);
-           add(nameLabel);
-           add(emailAddressLabel);
-           add(contactLabel);
-           add(passwordField);
-           add(userNameField);
-           add(addressField);
-           add(contactField);           
-
+           panel.setLayout(null);
+           panel.add(nameLabel);
+           panel.add(userNameField);
+           panel.add(passwordLabel);
+           panel.add(passwordField);         
+           panel.add(emailAddressLabel);
+           panel.add(addressField);
+           panel.add(contactLabel);        
+           panel.add(contactField);           
            // Defining Register Button
            registerButton = new JButton("Register");
-           registerButton.setBounds(110, 250, 100, 25);
+           registerButton.setBounds(125, 250, 100, 25);
            // fixing all Buttons
-           add(registerButton);
-           //Displaying Frame in Center of the Screen
-           Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-           this.setLocation(dim.width/2-this.getSize().width/2,
-                            dim.height/2-this.getSize().height/2);
+           panel.add(registerButton);
+           add(panel);
+           setExtendedState(JFrame.MAXIMIZED_BOTH);
            setTitle("Nutrio App");
            setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-           setResizable(false);
            setVisible(true);
            registerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent ae) {
@@ -114,6 +107,10 @@ public class Registration  extends JFrame{
                          }
 
                        }
+                        userNameField.setText("");
+                        passwordField.setText("");
+                        addressField.setText("");
+                        contactField.setText("");
                       }
                     
                }catch(Exception ex){
