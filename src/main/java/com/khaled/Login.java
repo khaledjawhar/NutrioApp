@@ -23,7 +23,9 @@ public class Login extends JFrame
     Login()
     {
         super("Login form");
-    	BasePanel panel=new BasePanel("src/main/resources/login image.jpg");
+        InputStream image = this.getClass().getClassLoader().getResourceAsStream("login image.jpg");
+        BasePanel panel=new BasePanel(image);
+    	//BasePanel panel=new BasePanel("src/main/resources/login image.jpg");
         //extra classes
         handler=new LoginHandler();
         handle =new handler();

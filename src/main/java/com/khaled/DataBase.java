@@ -14,8 +14,9 @@ public Connection connect(){
 	Properties prop = new Properties();
 	InputStream input = null;
 	try{
-		input = new FileInputStream("src/main/resources/config.properties");
-		prop.load(input);
+		InputStream inputStream = ClassLoader.getSystemResourceAsStream("config.properties");
+		//input = new FileInputStream("src/main/resources/config.properties");
+		prop.load(inputStream);
 		String dbUrl=prop.getProperty("dbUrl");
 		int dbPort=Integer.parseInt(prop.getProperty("dbPort"));
 		String dbUser=prop.getProperty("dbUser");
