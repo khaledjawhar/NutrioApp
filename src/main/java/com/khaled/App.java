@@ -7,6 +7,8 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,7 +34,9 @@ public class App
     	JButton registerButton;
     	JButton loginButton;
     	JFrame frame= new JFrame();
-    	BasePanel panel=new BasePanel("src/main/resources/nutrioAppImage.jpg");
+    	//BasePanel panel=new BasePanel("src/main/resources/nutrioAppImage.jpg");
+    	Image image=new Image();
+	    BasePanel panel=new BasePanel(image.image);
     	frame. setTitle("Nutrio App");
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
         registerButton = new JButton("Signup");

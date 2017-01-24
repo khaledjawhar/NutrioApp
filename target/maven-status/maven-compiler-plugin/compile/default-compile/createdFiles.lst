@@ -26,6 +26,7 @@ com\khaled\AddVisitInfo$handler.class
 com\khaled\FilteredJList$FilterModel.class
 com\khaled\BasePanel.class
 com\khaled\PatientMenu$2.class
+com\khaled\Image.class
 com\khaled\FoodRecall$1.class
 com\khaled\PatientMenu$6.class
 com\khaled\Login.class

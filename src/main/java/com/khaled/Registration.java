@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -57,7 +58,9 @@ public class Registration  extends JFrame{
            addressField.setBounds(125, 155, 130, 30);
            contactField = new JTextField(); 
            contactField.setBounds(125, 190, 130, 30);
-           BasePanel panel=new BasePanel("src/main/resources/registration image.jpg");
+           //BasePanel panel=new BasePanel("src/main/resources/registration image.jpg");
+           InputStream image = this.getClass().getClassLoader().getResourceAsStream("registration image.jpg");
+           BasePanel panel=new BasePanel(image);
            // fixing all Label,TextField,RadioButton
            panel.setLayout(null);
            panel.add(nameLabel);

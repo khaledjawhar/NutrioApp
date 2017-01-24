@@ -2,6 +2,7 @@ package com.khaled;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -59,7 +60,9 @@ public class AddVisitInfo  extends JFrame{
 						}  
 				}
 	     handle =new handler();
-	     BasePanel panel=new BasePanel("src/main/resources/patient Records.jpg");
+	     //BasePanel panel=new BasePanel("src/main/resources/patient Records.jpg");
+	     InputStream image = this.getClass().getClassLoader().getResourceAsStream("patient Records.jpg");
+	     BasePanel panel=new BasePanel(image);
 	     panel.setLayout(null);
 	     visitNote = new JTextArea();
 		 scrollPaneVisitNote = new JScrollPane(visitNote); 

@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -96,7 +97,9 @@ public class FoodRecall extends JFrame{
 						}  
 				}
 	     handle =new handler();	
-	     BasePanel panel=new BasePanel("src/main/resources/foodrecall.png");
+	     //BasePanel panel=new BasePanel("src/main/resources/foodrecall.png");
+	     InputStream image =this.getClass().getClassLoader().getResourceAsStream("patient Records.jpg");
+		 BasePanel panel=new BasePanel(image);
 	     panel.setLayout(null);
 	     listModel = new DefaultListModel();
 	     foodList=new JList(listModel);
