@@ -67,10 +67,8 @@ public class PatientMenu extends JMenuBar {
 	            		   String dbUrl=prop.getProperty("dbUrl");
 	            		   String dbPort=prop.getProperty("dbPort");
 	            		   String path=tempDir+"backup.sql";
-	            		   String executeCmd = "C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysqldump -u" +dbUser+ " -p" +dbPassword+ " --add-drop-database -B " +dbName+ " -r backup.sql";
-	            		   String command = "mysqldump --host=" + dbUrl + " --user=" + dbUser + " --password=" + dbPassword + " "
-	            	                + dbName + " -r backup.sql";
-	            	       System.out.println(executeCmd);
+	            		   String executeCmd = "mysqldump -u" +dbUser+ " -p" +dbPassword+ " --add-drop-database -B " +dbName+ " -r backup.sql";
+	            		   System.out.println(executeCmd);
 	            		   Process runtimeProcess = Runtime.getRuntime().exec(executeCmd);
 	            		   // call the mysqldump in terminal and execute it
 	            		   processComplete = runtimeProcess.waitFor();//store the state in variable
@@ -109,8 +107,9 @@ public class PatientMenu extends JMenuBar {
                  	        String dbPassword=prop.getProperty("dbPassword");
                  		    String dbName=prop.getProperty("dbName");
                  		    String path=tempDir+"backup.sql";
-                	    	runtimeProcess = Runtime.getRuntime().exec("C:\\Program Files\\MySQL\\MySQL Server 5.7\\bin\\mysql -u" + dbUser+ " -p"+dbPassword+" " + dbName+ " < backup.sql");
-                	    	int processComplete = runtimeProcess.waitFor();
+                 		    String[] executeCmd = new String[]{"mysql", "--user=" + dbUser, "--password=" + dbPassword, dbName,"-e", " source backup.sql"};   
+                 		    runtimeProcess = Runtime.getRuntime().exec(executeCmd);  
+                 		    int processComplete = runtimeProcess.waitFor();
                 	    	if(processComplete == 0) {
                 	    		 JOptionPane.showMessageDialog(null, "Restore succeeded");
                 	    	} else {
