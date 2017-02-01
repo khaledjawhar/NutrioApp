@@ -18,7 +18,7 @@ public class PatientMenu extends JMenuBar {
 
    String[ ] fileItems = new String[ ] {"Add Patient","Add Visit Info"};
    String[ ] editItems = new String[ ] {"View/Edit Patient Info", "View/Edit Visit Info"};
-   String[ ] processItems=new String[ ] {"Food Recall"};
+   String[ ] processItems=new String[ ] {"Food Recall","Anthro Pometrics Nutrients"};
    String[ ] Others=new String[ ] {"Backup","Restore"};
    public PatientMenu(  ) {
 
@@ -52,6 +52,12 @@ public class PatientMenu extends JMenuBar {
              	 FoodRecall foodRecall=new FoodRecall();
              }
           };
+          
+          ActionListener anthroPometricsNutrients = new ActionListener(  ) {
+              public void actionPerformed(ActionEvent event) {
+            	  AnthroPometricsNutrients apn=new AnthroPometricsNutrients();
+              }
+           };
            ActionListener backupListener = new ActionListener(  ) {
                public void actionPerformed(ActionEvent event) {
             	   try{
@@ -136,6 +142,9 @@ public class PatientMenu extends JMenuBar {
          JMenuItem foodRecall = new JMenuItem(processItems[0]);
          foodRecall.addActionListener(foodRecallListener);
          processMenu.add(foodRecall);
+         JMenuItem apn = new JMenuItem(processItems[1]);
+         apn.addActionListener(anthroPometricsNutrients);
+         processMenu.add(apn);
          JMenuItem backup = new JMenuItem(Others[0]);
          backup.addActionListener(backupListener);
          othersMenu.add(backup);
