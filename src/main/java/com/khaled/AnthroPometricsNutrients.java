@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import com.khaled.FoodRecall.handler;
@@ -186,6 +187,9 @@ public class AnthroPometricsNutrients extends JFrame{
 	     view=new JButton("View Anthropometrics & Nutrients");
 	     view.setBounds(620,300 ,230 ,30);
 	     panel.add(view);
+	     insert.addActionListener(handle);
+	     calculatePACoefficient.addActionListener(handle);
+	     view.addActionListener(handle);
 	     setTitle("Nutrio App");
 		 add(panel);
 		 setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -206,12 +210,78 @@ public class AnthroPometricsNutrients extends JFrame{
 	        {
 	        	if(ae.getSource()==calculatePACoefficient)
 	             {
+	        		float weight=Float.parseFloat(t_weight.getText().toString());
+	        		float height=Float.parseFloat(t_height.getText().toString());
+	        		float bmi=weight/height;
+	        		float value=0;
+	        		t_bmi.setText(Float.toString(bmi));
+	        		 if(patient_gender_male.isSelected())
+	        		 {
+	        			 if(paCombo.getSelectedItem().toString().equals("Sedentary")){
+	        				 t_pa_coefficient.setText("1");
+	        			 }
+	        			 else if(paCombo.getSelectedItem().toString().equals("Low Active")){
+	        				 t_pa_coefficient.setText("1.11");
+	        			 }
+	        			 else if(paCombo.getSelectedItem().toString().equals("Active")){
+	        				 t_pa_coefficient.setText("1.25");
+	        			 }
+	        			 else if(paCombo.getSelectedItem().toString().equals("Very Active")){
+	        				 t_pa_coefficient.setText("1.48");
+	        			 }
+	        			 value=(float) ((662-(9.53*Float.parseFloat(t_age.getText().toString())))+(Float.parseFloat(t_pa_coefficient.getText().toString())*((15.91*weight)+(539.6*height))));
+	        			 t_calorieLimit.setText(Float.toString(value));
+	        		 }
 	        		 
+	        		 if(patient_gender_female.isSelected())
+	        		 {
+	        			 if(paCombo.getSelectedItem().toString().equals("Sedentary")){
+	        				 t_pa_coefficient.setText("1");
+	        			 }
+	        			 else if(paCombo.getSelectedItem().toString().equals("Low Active")){
+	        				 t_pa_coefficient.setText("1.12");
+	        			 }
+	        			 else if(paCombo.getSelectedItem().toString().equals("Active")){
+	        				 t_pa_coefficient.setText("1.27");
+	        			 }
+	        			 else if(paCombo.getSelectedItem().toString().equals("Very Active")){
+	        				 t_pa_coefficient.setText("1.45");
+	        			 }
+	        			 value=(float) ((354-(6.91*Float.parseFloat(t_age.getText().toString())))+(Float.parseFloat(t_pa_coefficient.getText().toString())*((9.36*weight)+(726*height))));
+	        			 t_calorieLimit.setText(Float.toString(value));
+	        		 }
 	             }
 	        	
 	        	else if(ae.getSource()==insert)
-	             {
-	        		 
+	             {	        		 
+        			 try {
+        				 float totalCalories=0;
+        				 float totalCarbohydrate=0;
+        				 float totalProtein=0;
+        				 float totalFat=0;
+        				 DataBase db= new DataBase();    
+            			 con=db.connect(); 
+            			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_foodrecall where patient_name=? and foodrecall_number=?");
+            			 preStatement.setString(1,combo.getSelectedItem().toString()); 
+						 preStatement.setString(2,t_foodrecallnumber.getText());
+						 rs=preStatement.executeQuery();
+				         while(rs.next()){
+				        	 totalCalories+=Float.parseFloat(rs.getString("food_calories"));
+				        	 totalCarbohydrate+=Float.parseFloat(rs.getString("food_carbohydrate"));
+				        	 totalProtein+=Float.parseFloat(rs.getString("food_protein"));
+				        	 totalFat+=Float.parseFloat(rs.getString("food_fat"));
+				         }
+				         t_totalCalories.setText(Float.toString(totalCalories));
+				         t_totalFat.setText(Float.toString(totalFat));
+				         t_totalCarbohydrate.setText(Float.toString(totalCarbohydrate));
+				         t_totalProtein.setText(Float.toString(totalProtein));
+						
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						JOptionPane.showMessageDialog(null, "error in inserting data","Failed!!",
+	                             JOptionPane.ERROR_MESSAGE);
+						e.printStackTrace();
+					}
 	             }
 	        	
 	        	else if(ae.getSource()==view)

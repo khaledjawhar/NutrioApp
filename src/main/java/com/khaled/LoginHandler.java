@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.JOptionPane;
+
 public class LoginHandler {
 	Connection con;
 	PreparedStatement preStatement;
@@ -30,7 +32,8 @@ public class LoginHandler {
 	            }
 	        } catch (Exception e) {
 	            // TODO Auto-generated catch block
-	            System.out.println("error while validating"+e);
+	        	JOptionPane.showMessageDialog(null, "error while validating","Failed!!",
+                        JOptionPane.ERROR_MESSAGE);
 	            return false;
 	        }
 	        finally 

@@ -681,6 +681,8 @@ public class FoodRecall extends JFrame{
      	           
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
+     	        	JOptionPane.showMessageDialog(null, "error in adding items to table","Failed!!",
+                            JOptionPane.ERROR_MESSAGE);
      	           
      	        }
      	        finally 
