@@ -1,5 +1,6 @@
 com\khaled\AutocompleteJComboBox$2.class
 com\khaled\PatientMenu$7.class
+com\khaled\AnthroPometricsNutrients.class
 com\khaled\App.class
 com\khaled\EditPatientInfo$handler.class
 com\khaled\FoodRecall$handler.class
@@ -11,12 +12,14 @@ com\khaled\App$1.class
 com\khaled\EditVisitInfo$handler.class
 com\khaled\EditPatientInfo.class
 com\khaled\PatientMenu$1.class
+com\khaled\PatientMenu$8.class
 com\khaled\DataBase.class
 com\khaled\FilteredJList.class
 com\khaled\TableModel.class
 com\khaled\Registration.class
 com\khaled\FoodRecall.class
 com\khaled\AddPatient$handler.class
+com\khaled\AnthroPometricsNutrients$handler.class
 com\khaled\App$2.class
 com\khaled\PatientMenu$5.class
 com\khaled\AutocompleteJComboBox$1$1.class
