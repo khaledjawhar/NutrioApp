@@ -3,6 +3,7 @@ package com.khaled;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,6 +17,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+
+import org.apache.commons.lang3.StringUtils;
+
 import com.khaled.FoodRecall.handler;
 
 public class AnthroPometricsNutrients extends JFrame{
@@ -30,6 +34,9 @@ public class AnthroPometricsNutrients extends JFrame{
  	JTextField t_foodrecallnumber,t_age,t_height,t_weight,t_bmi,t_pa_coefficient,t_totalCalories,t_totalFat,t_totalCarbohydrate,t_totalProtein,t_calorieLimit,t_fatLimit,t_carbohydrateLimit,t_proteinLimit,t_deficiencyInCalories;
  	JRadioButton patient_gender_male,patient_gender_female;
  	JButton calculatePACoefficient,insert,view;
+    public static float round(float d, int decimalPlace) {
+        return BigDecimal.valueOf(d).setScale(decimalPlace,BigDecimal.ROUND_HALF_UP).floatValue();
+   }
 	AnthroPometricsNutrients()
 	{
 		List<String> myWords = new ArrayList<String>();
@@ -136,7 +143,7 @@ public class AnthroPometricsNutrients extends JFrame{
 	     t_totalCalories=new JTextField();
 	     t_totalCalories.setBounds(570, 30, 150, 30);
 	     panel.add(t_totalCalories);
-	     l_calorieLimit=new JLabel("Calories Limit");
+	     l_calorieLimit=new JLabel("Daily Calories");
 	     l_calorieLimit.setBounds(740, 30, 150, 30);
 	     panel.add(l_calorieLimit);
 	     t_calorieLimit=new JTextField();
@@ -148,7 +155,7 @@ public class AnthroPometricsNutrients extends JFrame{
 	     t_totalFat=new JTextField();
 	     t_totalFat.setBounds(570, 80, 150, 30);
 	     panel.add(t_totalFat);
-	     l_fatLimit=new JLabel("Fat Limit");
+	     l_fatLimit=new JLabel("Fat Range");
 	     l_fatLimit.setBounds(740, 80, 150, 30);
 	     panel.add(l_fatLimit);
 	     t_fatLimit=new JTextField();
@@ -160,7 +167,7 @@ public class AnthroPometricsNutrients extends JFrame{
 	     t_totalCarbohydrate=new JTextField();
 	     t_totalCarbohydrate.setBounds(570, 130, 150, 30);
 	     panel.add(t_totalCarbohydrate);
-	     l_carbohydrateLimit=new JLabel("Carbohydrate Limit");
+	     l_carbohydrateLimit=new JLabel("Carbohydrate Range");
 	     l_carbohydrateLimit.setBounds(740, 130, 150, 30);
 	     panel.add(l_carbohydrateLimit);
 	     t_carbohydrateLimit=new JTextField();
@@ -172,17 +179,17 @@ public class AnthroPometricsNutrients extends JFrame{
 	     t_totalProtein=new JTextField();
 	     t_totalProtein.setBounds(570, 180, 150, 30);
 	     panel.add(t_totalProtein);
-	     l_proteinLimit=new JLabel("Protein Limit");
+	     l_proteinLimit=new JLabel("Protein Range");
 	     l_proteinLimit.setBounds(740, 180, 150, 30);
 	     panel.add(l_proteinLimit);
 	     t_proteinLimit=new JTextField();
 	     t_proteinLimit.setBounds(910, 180, 150, 30);
 	     panel.add(t_proteinLimit);     
-	     l_deficiencyInCalories=new JLabel("Deficiency In Calories");
-	     l_deficiencyInCalories.setBounds(400, 230, 150, 30);
+	     l_deficiencyInCalories=new JLabel("Deficiency In Calories in format [+/-] value");
+	     l_deficiencyInCalories.setBounds(400, 230, 250, 30);
 	     panel.add(l_deficiencyInCalories);
 	     t_deficiencyInCalories=new JTextField();
-	     t_deficiencyInCalories.setBounds(570, 230, 150, 30);
+	     t_deficiencyInCalories.setBounds(700, 230, 150, 30);
 	     panel.add(t_deficiencyInCalories);
 	     view=new JButton("View Anthropometrics & Nutrients");
 	     view.setBounds(620,300 ,230 ,30);
@@ -210,6 +217,26 @@ public class AnthroPometricsNutrients extends JFrame{
 	        {
 	        	if(ae.getSource()==calculatePACoefficient)
 	             {
+	        		 if(t_weight.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the weight","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(t_height.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the height","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(t_age.getText().toString().equals("")){
+            			 JOptionPane.showMessageDialog(null, "You must insert the age","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
+            		 if(!patient_gender_female.isSelected()&&!patient_gender_male.isSelected()){
+            			 JOptionPane.showMessageDialog(null, "You must choose the gender","Success",
+                                 JOptionPane.INFORMATION_MESSAGE);
+            			 return;
+            		 }
 	        		float weight=Float.parseFloat(t_weight.getText().toString());
 	        		float height=Float.parseFloat(t_height.getText().toString());
 	        		float bmi=weight/height;
@@ -255,12 +282,74 @@ public class AnthroPometricsNutrients extends JFrame{
 	        	else if(ae.getSource()==insert)
 	             {	        		 
         			 try {
+        				 if( combo.getSelectedIndex() == -1){
+                			 JOptionPane.showMessageDialog(null, "You must insert the name of the patient","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
+                		 if(t_foodrecallnumber.getText().toString().equals("")){
+                			 JOptionPane.showMessageDialog(null, "You must insert the food recall number","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
+                		 if(t_weight.getText().toString().equals("")){
+                			 JOptionPane.showMessageDialog(null, "You must insert the weight","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
+                		 if(t_height.getText().toString().equals("")){
+                			 JOptionPane.showMessageDialog(null, "You must insert the height","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
+                		 if(t_age.getText().toString().equals("")){
+                			 JOptionPane.showMessageDialog(null, "You must insert the age","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
+                		 if(t_deficiencyInCalories.getText().toString().equals("")){
+                			 JOptionPane.showMessageDialog(null, "Please enter a number for calorie deficiency or 0 otherwise","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
+                		 if(!patient_gender_female.isSelected()&&!patient_gender_male.isSelected()){
+                			 JOptionPane.showMessageDialog(null, "You must choose the gender","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+                		 }
         				 float totalCalories=0;
         				 float totalCarbohydrate=0;
         				 float totalProtein=0;
         				 float totalFat=0;
-        				 DataBase db= new DataBase();    
+        				 float calorieLimit=Float.parseFloat( t_calorieLimit.getText().toString());
+        				 String deficiency=t_deficiencyInCalories.getText().toString();
+        				 String patientGender="";
+        				 String totalCarbohydrateLimit="";
+        				 String totalProteinLimit="";
+        				 String totalFatLimit="";
+        				 if(deficiency.contains("+")){
+        					 deficiency=deficiency.replace("+","");
+        					 if(StringUtils.isNumeric(deficiency))
+        						 calorieLimit+=Float.parseFloat(deficiency);
+        				 }
+        				 if(deficiency.contains("-")){
+        					 deficiency=deficiency.replace("-","");
+        					 if(StringUtils.isNumeric(deficiency))
+        						 calorieLimit-=Float.parseFloat(deficiency);
+        				 }      				 
+        				 DataBase db= new DataBase();  
             			 con=db.connect(); 
+            			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_descreption where patient_name=? and foodrecallnumber=?");
+         	        	 preStatement.setString(1, combo.getSelectedItem().toString()); 
+         	        	 preStatement.setString(2, t_foodrecallnumber.getText());    
+         	             //executes the prepared statement
+         	             rs=preStatement.executeQuery();
+         	             if(rs.next())
+         	             {
+         	            	 JOptionPane.showMessageDialog(null, "The name with the chosen food recall number already exists","Success",
+                                     JOptionPane.INFORMATION_MESSAGE);
+                			 return;
+         	             }
             			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_foodrecall where patient_name=? and foodrecall_number=?");
             			 preStatement.setString(1,combo.getSelectedItem().toString()); 
 						 preStatement.setString(2,t_foodrecallnumber.getText());
@@ -271,11 +360,48 @@ public class AnthroPometricsNutrients extends JFrame{
 				        	 totalProtein+=Float.parseFloat(rs.getString("food_protein"));
 				        	 totalFat+=Float.parseFloat(rs.getString("food_fat"));
 				         }
+				         if(patient_gender_male.isSelected())
+				        	 patientGender=patient_gender_male.getText();
+		     	         else if(patient_gender_female.isSelected())
+		     	        	 patientGender=patient_gender_female.getText();
 				         t_totalCalories.setText(Float.toString(totalCalories));
 				         t_totalFat.setText(Float.toString(totalFat));
 				         t_totalCarbohydrate.setText(Float.toString(totalCarbohydrate));
-				         t_totalProtein.setText(Float.toString(totalProtein));
-						
+				         t_totalProtein.setText(Float.toString(totalProtein));	
+				         totalCarbohydrateLimit=Float.toString(round(((float)((calorieLimit*0.45)/4)),2))+"-"+Float.toString(round(((float)((calorieLimit*0.65)/4)),2));
+				         totalProteinLimit=Float.toString(round(((float)((calorieLimit*0.1)/4)),2))+"-"+Float.toString(round(((float)((calorieLimit*0.35)/4)),2));
+				         totalFatLimit=Float.toString(round(((float)((calorieLimit*0.2)/4)),2))+"-"+Float.toString(round(((float)((calorieLimit*0.35)/4)),2));
+				         preStatement = con.prepareStatement("insert into patient_descreption (patient_name,patient_bmi,patient_fat_limit,patient_calorie_limit,patient_carbohydrate_limit,patient_total_fat,patient_total_calorie,patient_total_carbohydrate,patient_calorie_deficiency,patient_age,patient_height,patient_weight,patient_gender,patient_pa_coefficient,foodrecallnumber,patient_protein_limit,patient_total_protein) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+    	     	         preStatement.setString(1, combo.getSelectedItem().toString()); 
+    	     	       	 preStatement.setString(2,t_bmi.getText());    
+    	     	         preStatement.setString(3,totalFatLimit);
+    	     	         preStatement.setString(4, t_calorieLimit.getText().toString());
+    	     	         preStatement.setString(5, totalCarbohydrateLimit);     	 
+    	     	         preStatement.setString(6,t_totalFat.getText().toString()); 
+    	     	         preStatement.setString(7, t_totalCalories.getText().toString()); 
+    	     	         preStatement.setString(8, t_totalCarbohydrate.getText().toString()); 
+    	     	         preStatement.setString(9, t_deficiencyInCalories.getText().toString());
+    	     	         preStatement.setString(10, t_age.getText().toString());
+    	     	         preStatement.setString(11, t_height.getText().toString());
+    	     	         preStatement.setString(12, t_weight.getText().toString().toString());
+    	     	         preStatement.setString(13, patientGender);
+    	     	         preStatement.setString(14, t_pa_coefficient.getText().toString());
+    	     	         preStatement.setString(15, t_foodrecallnumber.getText().toString());
+    	     	         preStatement.setString(16, totalProteinLimit);
+    	     	         preStatement.setString(17, t_totalProtein.getText().toString());
+    	     	         preStatement.executeUpdate();   	
+    	     	         t_bmi.setText("");
+    	     	         t_totalFat.setText("");
+    	     	         t_totalCalories.setText("");
+    	     	         t_totalCarbohydrate.setText("");
+    	     	         t_deficiencyInCalories.setText("");
+    	     	         t_age.setText("");
+    	     	         t_height.setText("");
+    	     	         t_weight.setText("");
+    	     	         t_pa_coefficient.setText("");
+    	     	         t_foodrecallnumber.setText("");
+    	     	         t_totalProtein.setText("");
+    	     	         t_calorieLimit.setText("");
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						JOptionPane.showMessageDialog(null, "error in inserting data","Failed!!",

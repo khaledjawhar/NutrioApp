@@ -84,7 +84,8 @@ public class FoodRecall extends JFrame{
 			}
 			catch (Exception e) {
 		            // TODO Auto-generated catch block
-		            System.out.println("error while inserting patient data"+e);
+				JOptionPane.showMessageDialog(null, "error in retrieving data","Failed!!",
+                        JOptionPane.ERROR_MESSAGE);
 		        }
 		        finally 
 				{  
@@ -296,7 +297,6 @@ public class FoodRecall extends JFrame{
      	        } catch (Exception e) {
      	        	 JOptionPane.showMessageDialog(null, "error in inserting nutrition facts info","Failed!!",
                              JOptionPane.ERROR_MESSAGE);
-     	        	 System.out.println(e);
      	        }
      	        finally 
      			{  
@@ -321,22 +321,7 @@ public class FoodRecall extends JFrame{
             		for (int counter = 0; counter < food.size(); counter++) {
             			 listModel.addElement(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
             			 defaultValues.add(food.get(counter).getFood_type()+",brand: "+food.get(counter).getFood_brand());
-            			 /*
-            			 System.out.print("food name is "+food.get(counter).getFood_type()+"/"); 
-            	         System.out.print("food brand is "+food.get(counter).getFood_brand()+"/"); 		
-            	         System.out.print("food protein is "+food.get(counter).getFood_protein()+"/"); 	
-            	         System.out.print("food carbohydrate is "+food.get(counter).getFood_carbohydrate()+"/"); 	
-            	         System.out.print("food calories is "+food.get(counter).getFood_calories()+"/"); 	
-            	         System.out.println("food fat is "+food.get(counter).getFood_fat()); 	
-            	         System.out.println("food cholesterol is "+food.get(counter).getFood_cholesterol()); 
-            	         System.out.println("food sodium is "+food.get(counter).getFood_sodium()); 
-            	         System.out.println("food fiber is "+food.get(counter).getFood_dietary_fiber()); 
-            	         System.out.println("food sugars is "+food.get(counter).getFood_sugars()); 
-            	         System.out.println("food Vitamin A is "+food.get(counter).getFood_vitamin_a()); 
-            	         System.out.println("food Vitamin C is "+food.get(counter).getFood_vitamin_c());
-            	         System.out.println("food calcium is "+food.get(counter).getFood_calcium()); 
-            	         System.out.println("food iron is "+food.get(counter).getFood_iron());
-            	         */ 
+            			
             	    }
      	        } catch (Exception e) {
      	            // TODO Auto-generated catch block
@@ -485,8 +470,6 @@ public class FoodRecall extends JFrame{
      	            // TODO Auto-generated catch block
      	        	 JOptionPane.showMessageDialog(null, "error in writing to the file","Failed!!",
                              JOptionPane.ERROR_MESSAGE);
-     	        	 System.out.println(e);
-     	           
      	        }
      	        finally 
      			{  
@@ -640,7 +623,6 @@ public class FoodRecall extends JFrame{
             				 float quantity=Float.parseFloat(t_number_of_units.getText());
             				 if(f.getFood_calories().equals("null"))
             					 f.setFood_calories("0");
-            				 System.out.println("calories is"+f.getFood_calories());
             				 food_iter.setFood_calories(Float.toString(quantity*Float.parseFloat(f.getFood_calories())));
             				 if(f.getFood_protein().equals("null"))
             					 f.setFood_protein("0");
