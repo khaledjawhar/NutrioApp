@@ -412,6 +412,64 @@ public class AnthroPometricsNutrients extends JFrame{
 	        	
 	        	else if(ae.getSource()==view)
 	             {
+	        		try {
+	            		 if( combo.getSelectedIndex() == -1){
+	            			 JOptionPane.showMessageDialog(null, "You must insert the name of the patient","Success",
+	                                 JOptionPane.INFORMATION_MESSAGE);
+	            			 return;
+	            		 }
+	            		 if(t_foodrecallnumber.getText().toString().equals("")){
+	            			 JOptionPane.showMessageDialog(null, "You must insert the food recall number","Success",
+	                                 JOptionPane.INFORMATION_MESSAGE);
+	            			 return;
+	            		 }
+	            		 DataBase db= new DataBase();    
+	         			 con=db.connect(); 
+	         			 preStatement = con.prepareStatement("SELECT * FROM nutriodb.patient_descreption where patient_name=? and foodrecallnumber=?");
+	         			 preStatement.setString(1,combo.getSelectedItem().toString());
+	         			 preStatement.setString(2,t_foodrecallnumber.getText().toString());
+	         			 rs=preStatement.executeQuery();
+	         	         while(rs.next())
+	         	         {
+	         	        	 t_bmi.setText(rs.getString("patient_bmi"));
+	         	        	 t_totalProtein.setText(rs.getString("patient_total_protein"));
+	    	     	         t_totalFat.setText(rs.getString("patient_total_fat"));
+	    	     	         t_totalCalories.setText(rs.getString("patient_total_calorie"));
+	    	     	         t_totalCarbohydrate.setText(rs.getString("patient_total_carbohydrate"));
+	    	     	         t_deficiencyInCalories.setText(rs.getString("patient_calorie_deficiency"));
+	    	     	         t_age.setText(rs.getString("patient_age"));
+	    	     	         t_height.setText(rs.getString("patient_height"));
+	    	     	         t_weight.setText(rs.getString("patient_weight"));
+	    	     	         t_pa_coefficient.setText(rs.getString("patient_pa_coefficient"));
+	    	     	         t_foodrecallnumber.setText(rs.getString("foodrecallnumber"));    	     	        
+	    	     	         t_calorieLimit.setText(rs.getString("patient_calorie_limit"));
+	    	     	         t_carbohydrateLimit.setText(rs.getString("patient_carbohydrate_limit"));
+	    	     	         t_proteinLimit.setText(rs.getString("patient_protein_limit"));
+	    	     	         t_fatLimit.setText(rs.getString("patient_fat_limit"));
+	    	     	         if(rs.getString("patient_gender").equals("Male")){
+	    	     	        	patient_gender_male.setSelected(true);
+	    	     	         }
+	    	     	         else
+	    	     	        	patient_gender_female.setSelected(true);
+	         	         }
+	          	        preStatement.close();
+
+	      	         } catch (Exception e) {
+	      	            // TODO Auto-generated catch block
+	      	        	 JOptionPane.showMessageDialog(null, "error in pulling anthro pometrics nutrients for patient","Failed!!",
+	                              JOptionPane.ERROR_MESSAGE);
+	      	          
+	      	        }
+	      	        finally 
+	      			{  
+	      			   if( con != null )
+	      					try {
+	      						con.close();
+	      					} catch (SQLException e) {
+	      						// TODO Auto-generated catch block
+	      						e.printStackTrace();
+	      					}  
+	      			}
 	        		 
 	             }
 	             
